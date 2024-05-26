@@ -64,7 +64,7 @@ public:
       for (int colIdx = 0; colIdx < numCols; colIdx++) {
         if (digitalRead(cols[colIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
           // key press detected
-          kbd.press(layers[layerIdx][rowIdx][colIdx]);
+          kbd.press(layout1[layerIdx][rowIdx][colIdx]);
           pressed[layerIdx][rowIdx][colIdx] = ON;
 
 #ifdef DEBUG_LVL_1
@@ -78,7 +78,7 @@ public:
         } else if (!digitalRead(cols[colIdx]) &&
                    pressed[layerIdx][rowIdx][colIdx]) {
           // key was released
-          kbd.release(layers[layerIdx][rowIdx][colIdx]);
+          kbd.release(layout1[layerIdx][rowIdx][colIdx]);
           pressed[layerIdx][rowIdx][colIdx] = OFF;
         }
         delay(scanDelay);
