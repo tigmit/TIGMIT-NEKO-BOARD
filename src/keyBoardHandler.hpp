@@ -6,8 +6,8 @@
  * creator : @tigmit Licence : opensource
  */
 #pragma once
+#include "Defines\hardwareDef.hpp"
 #include "debugSettings.hpp"
-#include "hardwareDef.hpp"
 #include "layout.hpp"
 #include <BleKeyboard.h>
 
