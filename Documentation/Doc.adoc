@@ -1,0 +1,29 @@
+
+# USING GC9A01 round TFT Display:
+
+## setup:
+
+### TFT_eSPI Lib
+
+to use the GC9A01 Display, i am using the TFT_eSPI Lib by Bodmer'
+https://github.com/Bodmer/TFT_eSPI
+it is included locally in this project because it requires some work to set it up for our particular Display.
+
+to use the Display we need to change some Settings in lib\TFT_eSPI\User_Setup.h
+
+Following changes need to be made:
+
+ - select the right Driver. In Line 69 (LOL ROFL (/*_*)/ ) use #define GC9A01_DRIVER
+
+ - set the requred Pin defines for the Display:
+
+[source,c++]
+----
+    #define TFT_MOSI 23 // Aka. SDA     (must be MOSI on your board)
+    #define TFT_SCLK 18 // Aka. SCL     (must be SCLK on your board)
+    #define TFT_CS 22   // Chip select  (Usr defined)
+    #define TFT_DC 16   // Data Command (Usr defined)
+    #define TFT_RST 4   // Reset pin    (Usr defined)
+----
+
+connect these pins as per the defines and you should be good to go.
