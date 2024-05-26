@@ -46,9 +46,11 @@ public:
    * @param none
    */
   void waitForConnection() {
+    Serial.println("waiting for connection....");
     while (!kbd.isConnected()) {
       // do nothing and wait for a connection
     }
+    Serial.println("---> BT Connection established :3");
   }
 
   /**
