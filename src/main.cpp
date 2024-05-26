@@ -21,9 +21,7 @@ void setup() {
 
   kbd.begin();
   kbdHandler.setScanDelay(1);
-  Serial.println("waiting for connection....");
   kbdHandler.waitForConnection();
-  Serial.println("---> BT Connection established :3");
 }
 
 void loop() { kbdHandler.updateKeyMatrix(); }
