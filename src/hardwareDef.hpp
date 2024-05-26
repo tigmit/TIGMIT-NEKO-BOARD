@@ -1,5 +1,6 @@
 /**
  * hardwareDef.hpp
+ * brief   : defining the pins for the key matrix
  * created : 25.05.2024
  * creator : @tigmit
  * Licence : opensource
