@@ -9,12 +9,16 @@
 #include "Defines\hardwareDef.hpp"
 #include "debugSettings.hpp"
 #include "layout.hpp"
+#include "shiftRegisterHandler.hpp"
 #include <BleKeyboard.h>
 
 BleKeyboard kbd("tigmit_Board", "tigmit", 100);
 class keyboardHandler {
 public:
-  keyboardHandler() = default; // default constructor
+  keyboardHandler(shiftRegisterHandler *srh)
+      : pSrHandler_(srh){
+
+        }; // default constructor
 
   /**
    * @brief initialize all the row pins
@@ -26,17 +30,6 @@ public:
     for (int i = 0; i < numRows; i++) {
       pinMode(rows[i], OUTPUT);
       digitalWrite(rows[i], LOW);
-    }
-  }
-
-  /**
-   * @brief initialize all the collum pins
-   * @return void
-   * @param none
-   */
-  void initCols() {
-    for (int i = 0; i < numCols; i++) {
-      pinMode(cols[i], INPUT_PULLDOWN);
     }
   }
 
@@ -60,12 +53,15 @@ public:
    */
   void updateKeyMatrix() {
     //_______________________________________________________scan rwos
-    for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
-      digitalWrite(rows[rowIdx], HIGH); // activate row to scan
+    for (int colIdx = 0; colIdx < numCols; colIdx++) {
+      SPI.transfer16(1 << colIdx);    // set one row to VCC
+      digitalWrite(SRCLK_latch, LOW); // latch col to scan
       //_____________________________________________________scan cols
-      for (int colIdx = 0; colIdx < numCols; colIdx++) {
-        if (digitalRead(cols[colIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
-          // key press detected
+      for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
+        if (digitalRead(rows[rowIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
+          // pressed must be synchron to the scanned row.. might need to play
+          // with the shift register here key press detected (MSBFIRST or
+          // LSBFIRST)
           kbd.press(layout1[layerIdx][rowIdx][colIdx]);
           pressed[layerIdx][rowIdx][colIdx] = ON;
 
@@ -77,8 +73,10 @@ public:
           Serial.println(" ");
 #endif
 
-        } else if (!digitalRead(cols[colIdx]) &&
+        } else if (!digitalRead(rows[rowIdx]) &&
                    pressed[layerIdx][rowIdx][colIdx]) {
+          // pressed must be synchron to the scanned row.. might need to play
+          // with the shift register here key press detected
           // key was released
           kbd.release(layout1[layerIdx][rowIdx][colIdx]);
           pressed[layerIdx][rowIdx][colIdx] = OFF;
@@ -86,7 +84,7 @@ public:
         delay(scanDelay);
       }
 
-      digitalWrite(rows[rowIdx], LOW); // deactivate current row
+      digitalWrite(SRCLK_latch, LOW);
     }
   }
 
@@ -101,4 +99,6 @@ private:
   // TODO:: once we introduce Layers this needs to be itterated
   int layerIdx = 0;
   int scanDelay = 1;
+
+  shiftRegisterHandler *pSrHandler_;
 };
