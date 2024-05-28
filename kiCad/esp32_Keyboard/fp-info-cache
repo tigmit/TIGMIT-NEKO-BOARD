@@ -1,4 +1,4 @@
-25042804251020264
+25047954840059249
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -90089,6 +90089,13 @@ rotary encoder illuminated switch vertical
 0
 9
 8
+SN74HC595NG4
+DIP794W45P254L1969H508Q16
+
+
+0
+16
+16
 ScottoKeebs_Alps
 Alps
 Alps/keyswitch
@@ -102304,3 +102311,17 @@ Varistor VF
 0
 2
 2
+tigmitLib
+GC9A01 roundDisplay Footprint
+
+
+0
+7
+7
+tigmitLib
+b103 multichannel fader pot
+
+
+0
+8
+7
