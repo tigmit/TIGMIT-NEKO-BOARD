@@ -7,17 +7,19 @@
 
 #include "keyboardHandler.hpp"
 #include "layout.hpp"
+#include "shiftRegisterHandler.hpp"
 #include <Arduino.h>
 #include <BleKeyboard.h>
 
-keyboardHandler kbdHandler;
+shiftRegisterHandler srHandler;
+keyboardHandler kbdHandler(&srHandler);
 
 void setup() {
   Serial.begin(115200);
   Serial.println("Starting BLE work!");
 
   kbdHandler.initRows();
-  kbdHandler.initCols();
+  // srHandler.init(); for final HW version
 
   kbd.begin();
   kbdHandler.setScanDelay(1);
