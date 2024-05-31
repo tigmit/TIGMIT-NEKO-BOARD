@@ -12,14 +12,20 @@
 #define ON 1
 
 // Pin Definitions
-#define row0 34
+#define row0 34 // TODO: gotta set these accoarding to schematics
 #define row1 35
 #define row2 32
 #define row3 33
 #define row4 25
 #define row5 26
 
+// volume Slider
+#define SliderReadPin 12 // TODO: gotta set this accoarding to schematics
+
 // Matrix setup
 #define numRows 6
 #define numCols 16
 #define numLayers 1
+
+// i2C adress for display ESP32
+#define SlaveEspAdress 9
