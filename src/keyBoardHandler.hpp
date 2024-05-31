@@ -8,6 +8,7 @@
 #pragma once
 #include "Defines\hardwareDef.hpp"
 #include "debugSettings.hpp"
+#include "helpers.hpp"
 #include "layout.hpp"
 #include "shiftRegisterHandler.hpp"
 #include <BleKeyboard.h>
@@ -25,12 +26,18 @@ public:
    * @return void
    * @param none
    */
-  void initRows() {
-    // Initialize row output pin and set default state
+  void init() {
+    // Initialize row INPUT pin and set default state
     for (int i = 0; i < numRows; i++) {
-      pinMode(rows[i], OUTPUT);
-      digitalWrite(rows[i], LOW);
+      pinMode(rows[i], INPUT);
     }
+    // setup Volume read pin:
+    pinMode(SliderReadPin, INPUT);
+    currentVolume_ = analogRead(SliderReadPin);
+
+    // setup BLE connection indicator LED
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, LOW);
   }
 
   /**
@@ -41,8 +48,12 @@ public:
   void waitForConnection() {
     Serial.println("waiting for connection....");
     while (!kbd.isConnected()) {
-      // do nothing and wait for a connection
+      digitalWrite(LED_BUILTIN, HIGH);
+      delay(BleConnectionBlinkDelay);
+      digitalWrite(LED_BUILTIN, LOW);
+      delay(BleConnectionBlinkDelay);
     }
+    digitalWrite(LED_BUILTIN, HIGH);
     Serial.println("---> BT Connection established :3");
   }
 
@@ -52,6 +63,9 @@ public:
    * @param none
    */
   void updateKeyMatrix() {
+    if (!kbd.isConnected())
+      return;
+
     //_______________________________________________________scan rwos
     for (int colIdx = 0; colIdx < numCols; colIdx++) {
       SPI.transfer16(1 << colIdx);    // set one row to VCC
@@ -70,6 +84,8 @@ public:
           Serial.print(rowIdx);
           Serial.print(" | colIDX : ");
           Serial.print(colIdx);
+          Serial.print(" | pressed : ");
+          Serial.print(pressed[layerIdx][rowIdx][colIdx]);
           Serial.println(" ");
 #endif
 
@@ -81,10 +97,19 @@ public:
           kbd.release(layout1[layerIdx][rowIdx][colIdx]);
           pressed[layerIdx][rowIdx][colIdx] = OFF;
         }
-        delay(scanDelay);
+        // delay(scanDelay); // probably dont wanna use this
       }
 
       digitalWrite(SRCLK_latch, LOW);
+    }
+  }
+
+  void updateVolumeSlider() {
+    readVolume = analogRead(SliderReadPin);
+    if (outOfBounds(readVolume, sliderbounds)) {
+      // TODO: write volume to BLE output
+      MediaKeyReport vol{32, 0};
+      kbd.write(vol);
     }
   }
 
@@ -99,6 +124,10 @@ private:
   // TODO:: once we introduce Layers this needs to be itterated
   int layerIdx = 0;
   int scanDelay = 1;
+  int BleConnectionBlinkDelay = 1000;
 
+  int currentVolume_ = 0;
+  int readVolume = 0;
+  int sliderbounds = 10;
   shiftRegisterHandler *pSrHandler_;
 };
