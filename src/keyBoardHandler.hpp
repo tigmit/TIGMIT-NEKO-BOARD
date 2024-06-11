@@ -67,7 +67,7 @@ public:
       return;
 
     //_______________________________________________________scan rwos
-    for (int colIdx = 0; colIdx < 8; colIdx++) {
+    for (int colIdx = 0; colIdx < numCols; colIdx++) {
       SPI.transfer16((uint16_t(1 << colIdx))); // set one row to VCC
       digitalWrite(SRCLK_latch, HIGH);         // latch col to scan
       digitalWrite(SRCLK_latch, LOW);
