@@ -8,6 +8,6 @@
 
 #pragma once
 
-bool outOfBounds(int val, int range) {
-  return (val < (val - (range / 2)) || val > (val + ((range / 2))));
+bool outOfBounds(int val, int oldVal, int range) {
+  return (val < (oldVal - range) || val > (oldVal + range));
 }

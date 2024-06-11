@@ -24,7 +24,7 @@ public:
                                // shifting the MSB first. pin Col7 - Col1 = 0V
                                // and pin Col0 will be VCC = 3,3V
     SPI.setDataMode(SPI_MODE0);
-    SPI.setClockDivider(SPI_CLOCK_DIV2);
+    // SPI.setClockDivider(SPI_CLOCK_DIV128);
     SPI.begin();
     digitalWrite(SRCLK_latch, LOW);
 
@@ -32,7 +32,6 @@ public:
 
     digitalWrite(SRCLK_latch, HIGH);
     digitalWrite(SRCLK_latch, LOW);
-    Serial.println("done");
   }
 
   void latch() {

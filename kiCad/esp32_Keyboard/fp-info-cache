@@ -1,4 +1,4 @@
-25048030364375606
+25054903780006286
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -55789,13 +55789,6 @@ One digit LED 7 segment SA39-11 SC39-11 SA39-12 SC39-12
 0
 10
 10
-ESP32-DEVKIT-V1
-MODULE_ESP32_DEVKIT_V1
-
-
-0
-30
-30
 Ferrite_THT
 LairdTech_28C0236-0JW-10
 Ferrite, vertical, LairdTech 28C0236-0JW-10, https://assets.lairdtech.com/home/brandworld/files/28C0236-0JW-10.pdf, JW Miller core https://www.bourns.com/products/magnetic-products/j.w.-miller-through-hole-ferrite-beads-emi-filters
@@ -90089,13 +90082,13 @@ rotary encoder illuminated switch vertical
 0
 9
 8
-SN74HC595NG4
-DIP794W45P254L1969H508Q16
+SK12D07VG4
+SK12D07VG4
 
 
 0
-16
-16
+5
+5
 ScottoKeebs_Alps
 Alps
 Alps/keyswitch
@@ -102312,6 +102305,13 @@ Varistor VF
 2
 2
 tigmitLib
+ESP32 Vroom Devkit V1
+
+
+0
+30
+30
+tigmitLib
 GC9A01 roundDisplay Footprint
 
 
@@ -102319,9 +102319,37 @@ GC9A01 roundDisplay Footprint
 7
 7
 tigmitLib
+MCP1700 3.3V
+
+
+0
+3
+3
+tigmitLib
+SNH Shift register
+
+
+0
+16
+16
+tigmitLib
 b103 multichannel fader pot
 
 
 0
 8
 7
+tigmitLib
+battery solder pins
+
+
+0
+0
+0
+tp4056
+TP4056-18650
+
+
+0
+6
+6

@@ -29,6 +29,19 @@
 				"id": "arrow-circle-right",
 				"color": "terminal.ansiMagenta"
 			}
+		},
+		{
+			"type": "PlatformIO",
+			"task": "Clean",
+			"problemMatcher": [
+				"$platformio"
+			],
+			"group": "build",
+			"icon": {
+				"label": "PlatformIO: Clean",
+				"id": "trash",
+				"color": "terminal.ansiRed"
+			}
 		}
 	]
 }

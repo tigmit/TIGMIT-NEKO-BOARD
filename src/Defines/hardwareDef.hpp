@@ -22,6 +22,12 @@
 // volume Slider
 #define SliderReadPin 12 // TODO: gotta set this accoarding to schematics
 
+// battery is charging indicator
+#define BatterySense 14
+
+// reading the battery voltage through 33k / 100k voltage devider
+#define BatteryVoltage 27
+
 // Matrix setup
 #define numRows 6
 #define numCols 16

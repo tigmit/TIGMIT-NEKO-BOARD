@@ -1,0 +1,164 @@
+(footprint "battery solder pins"
+	(version 20240108)
+	(generator "pcbnew")
+	(generator_version "8.0")
+	(layer "F.Cu")
+	(property "Reference" "REF**"
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "ecd4f767-02dc-4ad2-916b-d9a62f6e7870")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+		)
+	)
+	(property "Value" "battery solder pins"
+		(at 0 2.5 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "d99e1bc3-68de-4133-be8b-5f4ad25610d1")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Footprint" "battery solder pins"
+		(at 0.5 4 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "356ae805-3129-4e03-929b-97323dd024fd")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Datasheet" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "f038163c-5787-4a95-a13d-c7c7df4a74d3")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(property "Description" ""
+		(at 0 0 0)
+		(unlocked yes)
+		(layer "F.Fab")
+		(hide yes)
+		(uuid "3acbeac4-ddbb-48c9-8909-b0efd96192a2")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.15)
+			)
+		)
+	)
+	(attr through_hole)
+	(fp_line
+		(start -3.73 -2.91)
+		(end -3.13 -2.91)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "5704da71-38f1-47fc-85a6-c1f622b3466d")
+	)
+	(fp_line
+		(start -3.43 -2.31)
+		(end -3.73 -2.91)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "c9a7e7f0-a3ff-4423-abce-6fc5a7ff3b1b")
+	)
+	(fp_line
+		(start -3.13 -2.91)
+		(end -3.43 -2.31)
+		(stroke
+			(width 0.12)
+			(type solid)
+		)
+		(layer "F.SilkS")
+		(uuid "e7e73d2a-d7ca-4563-b858-89681ed844a9")
+	)
+	(fp_line
+		(start -3.43 -0.5)
+		(end -4.38 -2)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "463ec727-4240-462c-ad0b-02c33892e3d3")
+	)
+	(fp_line
+		(start -2.48 -2)
+		(end -3.43 -0.5)
+		(stroke
+			(width 0.1)
+			(type solid)
+		)
+		(layer "F.Fab")
+		(uuid "552de69f-49ed-4fb0-898c-393256710b3c")
+	)
+	(fp_text user "B+"
+		(at -7 1 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "00d943c3-b26c-4fd9-8380-c95f14dba1a8")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(fp_text user "B-"
+		(at 0.5 1 0)
+		(unlocked yes)
+		(layer "F.SilkS")
+		(uuid "9b5f95b1-a7ff-4537-90a1-6308645b0c26")
+		(effects
+			(font
+				(size 1 1)
+				(thickness 0.1)
+			)
+			(justify left bottom)
+		)
+	)
+	(pad "1" thru_hole roundrect
+		(at -3.43 0)
+		(size 2.1 3.6)
+		(drill 1.4)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(roundrect_rratio 0.119048)
+		(uuid "7eb3efb8-f951-4d8e-8164-ea4866ac183e")
+	)
+	(pad "2" thru_hole oval
+		(at 4.19 0)
+		(size 2.1 3.6)
+		(drill 1.4)
+		(layers "*.Cu" "*.Mask")
+		(remove_unused_layers no)
+		(uuid "ffc2189c-f59e-4c5f-a41b-f2350a1da189")
+	)
+)
