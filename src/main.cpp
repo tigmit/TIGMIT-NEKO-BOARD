@@ -6,17 +6,20 @@
  */
 
 #include "Defines/hardwareDef.hpp"
+#include "batteryHandler.hpp"
+#include "debugSettings.hpp"
+#include "displayHandler.hpp" // for testing display
 #include "keyboardHandler.hpp"
 #include "layout.hpp"
 #include "shiftRegisterHandler.hpp"
+
 #include <Arduino.h>
 #include <BleKeyboard.h>
 
-#include "displayHandler.hpp" // for testing display
-
 shiftRegisterHandler srHandler;
 keyboardHandler kbdHandler(&srHandler);
-displayHandler dspHandler;
+batteryHandler batHandler;
+displayHandler dspHandler(&batHandler);
 
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
@@ -29,16 +32,22 @@ void setup() {
   // will be to slow.. i want to reach at least 1/1ms = 1kHz matrix scan
   // frequency. if the -O2 setting doesnt work i can try setting the cpu freq
   // higher.. at the cost of battery life tho.... damn
+
   Serial.begin(115200);
+
+  // ----------init display
   dspHandler.init();
   dspHandler.startScreen();
+
+  // ----------init keyboard matrix
   Serial.println("Starting BLE work!");
-
   kbdHandler.init();
-  // srHandler.init(); for final HW version
-
+  srHandler.init();
   kbd.begin();
-  kbdHandler.setScanDelay(0);
+  kbdHandler.setScanDelay(0); // function call disabled for now
+
+  // ----------init battery handler
+  batHandler.init();
 
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
@@ -48,11 +57,16 @@ void setup() {
 
 void Loop0_(void *param) {
   // setup section for loop0:
-  dspHandler.waitForConnectionScreen();
-  kbdHandler.waitForConnection();
+
   //__________________RUN Loop0
   while (true) {
-    dspHandler.bongoPlay();
+    if (!kbd.isConnected()) {
+      dspHandler.waitForConnectionScreen();
+      kbdHandler.waitForConnection();
+      dspHandler.connectedScreen();
+    }
+    dspHandler.updateChargeIcon();
+    // TODO : update every 5 minutes or so.... batHandler.updateBateryHandler();
   }
 }
 
@@ -60,11 +74,14 @@ void Loop1_(void *param) {
   // setup section for loop1:
   //__________________RUN Loop1 (default core)
   while (true) {
-
+#ifdef DEBUG_LVL_2
     unsigned long dt = micros();
+#endif
     kbdHandler.updateKeyMatrix();
+#ifdef DEBUG_LVL_2
     Serial.print(micros() - dt);
     Serial.println("micro Seconds for scan");
+#endif
   }
 }
 

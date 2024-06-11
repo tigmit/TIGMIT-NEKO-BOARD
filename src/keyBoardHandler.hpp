@@ -67,20 +67,23 @@ public:
       return;
 
     //_______________________________________________________scan rwos
-    for (int colIdx = 0; colIdx < numCols; colIdx++) {
-      SPI.transfer16(1 << colIdx);    // set one row to VCC
-      digitalWrite(SRCLK_latch, LOW); // latch col to scan
+    for (int colIdx = 0; colIdx < 8; colIdx++) {
+      SPI.transfer16((uint16_t(1 << colIdx))); // set one row to VCC
+      digitalWrite(SRCLK_latch, HIGH);         // latch col to scan
+      digitalWrite(SRCLK_latch, LOW);
       //_____________________________________________________scan cols
       for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
         if (digitalRead(rows[rowIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
-          // pressed must be synchron to the scanned row.. might need to play
-          // with the shift register here key press detected (MSBFIRST or
-          // LSBFIRST)
+// pressed must be synchron to the scanned row.. might need to play
+// with the shift register here key press detected (MSBFIRST or
+// LSBFIRST)
+#ifndef DISABLE_BLE_OUTPUT
           kbd.press(layout1[layerIdx][rowIdx][colIdx]);
+#endif
           pressed[layerIdx][rowIdx][colIdx] = ON;
 
 #ifdef DEBUG_LVL_1
-          Serial.print("key pressed: rowIDX : ");
+          Serial.print("key pressed : rowIDX : ");
           Serial.print(rowIdx);
           Serial.print(" | colIDX : ");
           Serial.print(colIdx);
@@ -94,23 +97,31 @@ public:
           // pressed must be synchron to the scanned row.. might need to play
           // with the shift register here key press detected
           // key was released
+
+#ifndef DISABLE_BLE_OUTPUT
           kbd.release(layout1[layerIdx][rowIdx][colIdx]);
+#endif
           pressed[layerIdx][rowIdx][colIdx] = OFF;
+#ifdef DEBUG_LVL_1
+          Serial.print("key RELEASED: rowIDX : ");
+          Serial.print(rowIdx);
+          Serial.print(" | colIDX : ");
+          Serial.print(colIdx);
+          Serial.print(" | pressed : ");
+          Serial.print(pressed[layerIdx][rowIdx][colIdx]);
+          Serial.println(" ");
+#endif
         }
         // delay(scanDelay); // probably dont wanna use this
       }
-
-      digitalWrite(SRCLK_latch, LOW);
     }
   }
 
   void updateVolumeSlider() {
     readVolume = analogRead(SliderReadPin);
-    if (outOfBounds(readVolume, sliderbounds)) {
-      // TODO: write volume to BLE output
-      MediaKeyReport vol{32, 0};
-      kbd.write(vol);
-    }
+    // if (outOfBounds(readVolume, sliderbounds)) {
+    //  // TODO: write volume to BLE output
+    //}
   }
 
   /**
@@ -122,9 +133,10 @@ public:
 
 private:
   // TODO:: once we introduce Layers this needs to be itterated
+
   int layerIdx = 0;
-  int scanDelay = 1;
-  int BleConnectionBlinkDelay = 1000;
+  int scanDelay = 1000;
+  int BleConnectionBlinkDelay = 1;
 
   int currentVolume_ = 0;
   int readVolume = 0;
