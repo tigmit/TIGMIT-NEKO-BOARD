@@ -19,7 +19,7 @@
 shiftRegisterHandler srHandler;
 keyboardHandler kbdHandler(&srHandler);
 batteryHandler batHandler;
-displayHandler dspHandler(&batHandler);
+displayHandler dspHandler(&batHandler, &kbdHandler);
 
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
@@ -65,8 +65,10 @@ void Loop0_(void *param) {
       kbdHandler.waitForConnection();
       dspHandler.connectedScreen();
     }
-    dspHandler.updateChargeIcon();
-    // TODO : update every 5 minutes or so.... batHandler.updateBateryHandler();
+    //  // TODO : update every 5 minutes or so....
+    //  batHandler.updateBateryHandler();
+    // dspHandler.updateChargeIcon();
+    dspHandler.bongoMODE();
   }
 }
 

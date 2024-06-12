@@ -71,6 +71,7 @@ public:
       SPI.transfer16((uint16_t(1 << colIdx))); // set one row to VCC
       digitalWrite(SRCLK_latch, HIGH);         // latch col to scan
       digitalWrite(SRCLK_latch, LOW);
+      delayMicroseconds(100); // needed
       //_____________________________________________________scan cols
       for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
         if (digitalRead(rows[rowIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
@@ -91,6 +92,10 @@ public:
           Serial.print(pressed[layerIdx][rowIdx][colIdx]);
           Serial.println(" ");
 #endif
+
+          // for bongo mode
+          keyPressToggle = !keyPressToggle;
+          // bongo end
 
         } else if (!digitalRead(rows[rowIdx]) &&
                    pressed[layerIdx][rowIdx][colIdx]) {
@@ -131,12 +136,15 @@ public:
    */
   void setScanDelay(int milliSeconds) { scanDelay = milliSeconds; }
 
+  bool getKeyPressToggle() { return keyPressToggle; }
+
 private:
   // TODO:: once we introduce Layers this needs to be itterated
+  bool keyPressToggle = false;
 
   int layerIdx = 0;
   int scanDelay = 1000;
-  int BleConnectionBlinkDelay = 1;
+  int BleConnectionBlinkDelay = 500;
 
   int currentVolume_ = 0;
   int readVolume = 0;

@@ -16,8 +16,8 @@ public:
   void init() {
     pinMode(SRCLK_latch, OUTPUT);
     // since we are using SPI we dont have to set this to output.
-    // pinMode(RCLK_clock, OUTPUT);
-    // pinMode(SER_data, OUTPUT);
+    pinMode(RCLK_clock, OUTPUT);
+    pinMode(SER_data, OUTPUT);
 
     SPI.setBitOrder(MSBFIRST); // can be flipped... gotta experiment a bit.  |
                                // MSB - 0,0,0,0,0,0,0,1 - LSB
