@@ -30,7 +30,10 @@ void pngDraw(PNGDRAW *pDraw);
 
 class displayHandler {
 public:
-  displayHandler(batteryHandler *pBatHandler) : pBatHandler_(pBatHandler) { ; }
+  displayHandler(batteryHandler *pBatHandler, keyboardHandler *pKbdHandler)
+      : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler) {
+    ;
+  }
 
   void init() {
     // Initialise the TFT
@@ -90,6 +93,9 @@ public:
   void updateChargeIcon(int x = 150, int y = 60) {
 
     if (pBatHandler_->isCharging() && !chargeSet) {
+
+      pBatHandler_->updateBateryHandler(); // dont do this so often please
+
       // i want to erse just the symbol. not the wole screen
       tft.fillRect(x, y, 60, 80, TFT_BLACK);
       printPNG(charging_icon, sizeof(charging_icon), 150, 60);
@@ -97,6 +103,9 @@ public:
       chargeSet = true;
       connSet = false;
     } else if (!pBatHandler_->isCharging() && !connSet) {
+
+      pBatHandler_->updateBateryHandler(); // dont do this so often please
+
       // i want to erse just the symbol. not the wole screen
       tft.fillRect(x, y, 60, 80, TFT_BLACK);
       printPNG(battery_icon, sizeof(battery_icon), 150, 60);
@@ -106,9 +115,9 @@ public:
     }
 
     pBatHandler_->updateBateryHandler(); // dont do this so often please
-    if (outOfBounds((int)pBatHandler_->getSOC(), currentSOC, 4)) {
-      printSOC(x, y);
-    }
+    // if (outOfBounds((int)pBatHandler_->getSOC(), currentSOC, 4)) {
+    //  printSOC(x, y);
+    //}
   }
 
   void printSOC(int x = 150, int y = 60) {
@@ -128,6 +137,21 @@ public:
     delay(100);
   }
 
+  void bongoMODE() {
+    if ((pKbdHandler_->getKeyPressToggle() != prevBtnPressed) && !bongoLftOn) {
+      prevBtnPressed = pKbdHandler_->getKeyPressToggle();
+      printPNG(bongoLeft, sizeof(bongoLeft));
+      bongoLftOn = true;
+      bongoRgtOn = false;
+    } else if ((pKbdHandler_->getKeyPressToggle() != prevBtnPressed) &&
+               !bongoRgtOn) {
+      prevBtnPressed = pKbdHandler_->getKeyPressToggle();
+      printPNG(bongoRight, sizeof(bongoRight));
+      bongoLftOn = false;
+      bongoRgtOn = true;
+    }
+  }
+
 private:
   void printPNG(const byte *image, int size, int16_t x = 0, int16_t y = 0) {
     xpos = x;
@@ -141,12 +165,17 @@ private:
     }
   }
 
+  bool prevBtnPressed = false;
+  bool bongoLftOn = false;
+  bool bongoRgtOn = false;
+
   bool chargeSet = false;
   bool connSet = false;
 
   float currentSOC = 0;
 
   batteryHandler *pBatHandler_ = nullptr;
+  keyboardHandler *pKbdHandler_ = nullptr;
 };
 
 // This next function will be called during decoding of the png file to
