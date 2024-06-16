@@ -5214,6 +5214,16 @@
 	)
 	(wire
 		(pts
+			(xy -101.6 190.5) (xy -69.85 190.5)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30beb2cc-b976-4ccd-aad8-8012d3c5ff5b")
+	)
+	(wire
+		(pts
 			(xy 63.5 80.01) (xy 66.04 80.01)
 		)
 		(stroke
@@ -9362,6 +9372,28 @@
 					(size 1.27 1.27)
 				)
 				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "NEOPIXEL_CONTROLL"
+		(shape input)
+		(at -101.6 190.5 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "2401ac5e-6688-4ebc-a9f6-db7139e9ff59")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at -124.1795 190.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
 				(hide yes)
 			)
 		)

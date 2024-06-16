@@ -1,4 +1,4 @@
-25054903780006286
+25061777341284614
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -102304,6 +102304,27 @@ Varistor VF
 0
 2
 2
+WS2812B
+LED3535
+
+
+0
+4
+4
+WS2812B
+WS2812B
+
+
+0
+4
+4
+WS2812B
+WS2812B-NARROW
+
+
+0
+4
+4
 tigmitLib
 ESP32 Vroom Devkit V1
 
@@ -102341,6 +102362,13 @@ b103 multichannel fader pot
 7
 tigmitLib
 battery solder pins
+
+
+0
+2
+2
+tigmitLib
+hotswap socket with neopixel
 
 
 0

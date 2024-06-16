@@ -11,6 +11,7 @@
 #include "displayHandler.hpp" // for testing display
 #include "keyboardHandler.hpp"
 #include "layout.hpp"
+#include "rgbHandler.hpp"
 #include "shiftRegisterHandler.hpp"
 
 #include <Arduino.h>
@@ -19,6 +20,7 @@
 shiftRegisterHandler srHandler;
 keyboardHandler kbdHandler(&srHandler);
 batteryHandler batHandler;
+rgbHandler RGBHandler;
 displayHandler dspHandler(&batHandler, &kbdHandler);
 
 // setup Task handles
@@ -49,6 +51,9 @@ void setup() {
   // ----------init battery handler
   batHandler.init();
 
+  // ----------init RGB handler
+  RGBHandler.init();
+
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
   // creating loop on core 0
@@ -60,15 +65,16 @@ void Loop0_(void *param) {
 
   //__________________RUN Loop0
   while (true) {
-    if (!kbd.isConnected()) {
-      dspHandler.waitForConnectionScreen();
-      kbdHandler.waitForConnection();
-      dspHandler.connectedScreen();
-    }
+    // if (!kbd.isConnected()) {
+    //  dspHandler.waitForConnectionScreen();
+    //  kbdHandler.waitForConnection();
+    //  dspHandler.connectedScreen();
+    //}
     //  // TODO : update every 5 minutes or so....
-    //  batHandler.updateBateryHandler();
+    // batHandler.updateBateryHandler();
     // dspHandler.updateChargeIcon();
-    dspHandler.bongoMODE();
+    // dspHandler.bongoMODE();
+    dspHandler.mainScreen();
   }
 }
 
