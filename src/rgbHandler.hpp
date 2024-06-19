@@ -8,14 +8,13 @@
 #pragma once
 
 #include <FastLED.h>
-#include <random>
 
 #define NUM_LEDS 81
 #define DATA_PIN 19
 
 class rgbHandler {
 public:
-  rgbHandler(/* args */) = default;
+  rgbHandler() = default;
 
   void init() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -23,12 +22,20 @@ public:
     // use this to limit the current we draw from the lipo
     FastLED.setMaxPowerInVoltsAndMilliamps(5, 800);
 
-    randomSeed(analogRead(0));
-
     for (int i = 0; i < NUM_LEDS; i++) {
-      random();
-      leds[i] = random(0xFFFFFF);
+      leds[i] = CRGB::Black;
     }
+    FastLED.show();
+  }
+
+  void setConstColor(int color) {
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds[i] = color;
+    }
+  }
+
+  void brightnessSlider() {
+    FastLED.setBrightness(analogRead(SliderReadPin) * (255.0 / 4095.0));
     FastLED.show();
   }
 

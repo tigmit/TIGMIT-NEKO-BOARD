@@ -35,3 +35,8 @@
 
 // i2C adress for display ESP32
 #define SlaveEspAdress 9
+
+// pins for rotary Encoder
+#define encCLK 17 // CLK ENCODER
+#define encDT 16  // DT ENCODER
+#define encBTN 39 // encoder button
