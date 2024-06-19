@@ -19,7 +19,7 @@ public:
   void init() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
     FastLED.setBrightness(0xFF);
-    // use this to limit the current we draw from the lipo
+    // use this to limit the current draw from the lipo
     FastLED.setMaxPowerInVoltsAndMilliamps(5, 800);
 
     for (int i = 0; i < NUM_LEDS; i++) {
