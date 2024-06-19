@@ -110,7 +110,7 @@ public:
   // ____________________________________________DISPLAY ELEMENTS_____________
   void updateChargeIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
 
-  void drawBatteryIcon(int x = 90, int y = 10);
+  void drawBatteryIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
 
   void drawBLEIcon(int x, int y, bool connected = false);
   // ____________________________________________DISPLAY MODES________________
@@ -245,7 +245,6 @@ void displayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
   } else if (!pBatHandler_->isCharging() && !battIconOn) {
 
     // i want to erse just the symbol. not the wole screen
-    tft.fillCircle(x + 30, y + 30, 31, BGcolor);
     drawBatteryIcon();
     printSOC(x + 12, y + 25);
     battIconOn = true;
@@ -257,7 +256,8 @@ void displayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
   }
 }
 
-void displayHandler::drawBatteryIcon(int x, int y) {
+void displayHandler::drawBatteryIcon(int x, int y, u_int32_t BGcolor) {
+  tft.fillCircle(x + 30, y + 30, 31, BGcolor);
   tft.drawCircle(x + 30, y + 30, 30, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 25, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 20, TFT_GREEN);
