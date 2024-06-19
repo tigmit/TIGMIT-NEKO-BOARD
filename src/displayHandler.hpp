@@ -50,37 +50,11 @@ public:
     initSprites();
   }
 
-  void updateChargingScreen() {
-    if (pBatHandler_->isCharging() && !chargeSet) {
-      chargingScreen();
-      chargeSet = true;
-      connSet = false;
-    } else if (!pBatHandler_->isCharging() && !connSet) {
-      connectedScreen();
-      connSet = true;
-      chargeSet = false;
-    }
-  }
-
   void startScreen() {
     tft.fillScreen(TFT_BLACK);
     tft.setCursor(10, 240 / 2, 4);
     tft.setTextColor(TFT_WHITE);
     tft.println(" starting keyboard...\n");
-  }
-
-  void waitForConnectionScreen() {
-    printPNG(bongoLeft, sizeof(bongoLeft));
-    tft.setCursor(10, 240 / 4, 2);
-    tft.setTextColor(TFT_BLACK);
-    tft.println(" wait for connection...\n");
-  }
-
-  void connectedScreen() {
-    tft.fillScreen(TFT_BLACK);
-    tft.setCursor(10, 180, 4);
-    tft.setTextColor(TFT_WHITE);
-    tft.println("   Connected! :3\n");
   }
 
   void chargingScreen() {
@@ -100,9 +74,9 @@ public:
   }
 
   void printSOC(int x, int y) {
-    SOCtext.fillSprite(TFT_BLACK);
+    SOCtext.fillSprite(TFT_TRANSPARENT);
     SOCtext.setCursor(0, 0);
-    SOCtext.print(" ");
+    SOCtext.print("  ");
     SOCtext.print((int)pBatHandler_->getSOC());
     SOCtext.print("%");
     SOCtext.pushSprite(x, y);
@@ -113,7 +87,7 @@ public:
 
     tft.setCursor(x, y, 2);
     tft.setTextColor(TFT_BLACK);
-    // tft.fillRect(x + 55, y, 50, 18, TFT_WHITE);
+    tft.fillRect(x + 55, y, 50, 18, TFT_WHITE);
     tft.print(" streak : ");
     tft.print(keyStreak);
   }
@@ -137,6 +111,8 @@ public:
   void updateChargeIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
 
   void drawBatteryIcon(int x = 90, int y = 10);
+
+  void drawBLEIcon(int x, int y, bool connected = false);
   // ____________________________________________DISPLAY MODES________________
   void mainScreen();
   void bongoMODE(); // drumm the bongo hehe
@@ -154,10 +130,14 @@ private:
     }
   }
 
+  // immage draw states
   bool prevBtnPressed = false;
   bool bongoLftOn = false;
   bool bongoRgtOn = false;
   bool bongoRestOn = false;
+
+  bool BLEwaitOn = false;
+  bool BLEconnOn = false;
 
   bool wallpaperOn = false;
 
@@ -165,8 +145,8 @@ private:
   u_int32_t handsOffCount = handsOfftrigger;
   u_int32_t keyStreak = 0;
 
-  bool chargeSet = false;
-  bool connSet = false;
+  bool chargeFlashOn = false;
+  bool battIconOn = false;
 
   float currentSOC = 0;
 
@@ -195,11 +175,36 @@ void displayHandler::mainScreen() {
     printPNG(wallpaper240X240, sizeof(wallpaper240X240), 0, 0);
     wallpaperOn = true;
   }
+  // update the SOC and update the charge icon.
+  // dont do this so often please
+  // TODO: utalize esp32 Timer?
+  pBatHandler_->updateBateryHandler();
   updateChargeIcon();
+
+  // update the BLE icon
+  drawBLEIcon(25, 70, kbd.isConnected());
 }
 
 void displayHandler::bongoMODE() {
-  if ((pKbdHandler_->getKeyPressToggle() != prevBtnPressed) && !bongoLftOn) {
+  wallpaperOn = false;
+  BLEwaitOn = false;
+  BLEconnOn = false;
+  battIconOn = false;
+  chargeFlashOn = false;
+  // todo create a function resetDspdrawflags()
+
+  if ((handsOffCount >= handsOfftrigger) && !bongoRestOn) {
+    tft.fillScreen(TFT_WHITE);
+    printPNG(bongoHandsOff, sizeof(bongoHandsOff), 0, 90);
+    printKeyStreak(30, 60);
+
+    bongoRestOn = true;
+    bongoLftOn = false;
+    bongoRgtOn = false;
+    handsOffCount = 0;
+    keyStreak = 0;
+  } else if ((pKbdHandler_->getKeyPressToggle() != prevBtnPressed) &&
+             !bongoLftOn) {
     prevBtnPressed = pKbdHandler_->getKeyPressToggle();
 
     printPNG(bongoLeft, sizeof(bongoLeft), 0, 90);
@@ -222,18 +227,6 @@ void displayHandler::bongoMODE() {
     bongoLftOn = false;
     bongoRgtOn = true;
     handsOffCount = 0;
-  } else if ((handsOffCount >= handsOfftrigger) && !bongoRestOn) {
-    tft.fillScreen(TFT_WHITE); // once i have a state machine. this should be
-                               // in enter method
-
-    printPNG(bongoHandsOff, sizeof(bongoHandsOff), 0, 90);
-    printKeyStreak(30, 60);
-
-    bongoRestOn = true;
-    bongoLftOn = false;
-    bongoRgtOn = false;
-    handsOffCount = 0;
-    keyStreak = 0;
   } else if (!bongoRestOn) {
     // maybe we can fix this with a timer....?
     handsOffCount++;
@@ -242,29 +235,24 @@ void displayHandler::bongoMODE() {
 
 void displayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
 
-  if (pBatHandler_->isCharging() && !chargeSet) {
-
-    pBatHandler_->updateBateryHandler(); // dont do this so often please
+  if (pBatHandler_->isCharging() && !chargeFlashOn) {
 
     // i want to erse just the symbol. not the wole screen
     chargeLightning.pushSprite(x + 20, y + 15);
     printSOC(x + 12, y + 25);
-    chargeSet = true;
-    connSet = false;
-  } else if (!pBatHandler_->isCharging() && !connSet) {
-
-    pBatHandler_->updateBateryHandler(); // dont do this so often please
+    chargeFlashOn = true;
+    battIconOn = false;
+  } else if (!pBatHandler_->isCharging() && !battIconOn) {
 
     // i want to erse just the symbol. not the wole screen
     tft.fillCircle(x + 30, y + 30, 31, BGcolor);
     drawBatteryIcon();
     printSOC(x + 12, y + 25);
-    connSet = true;
-    chargeSet = false;
+    battIconOn = true;
+    chargeFlashOn = false;
   }
 
-  pBatHandler_->updateBateryHandler(); // dont do this so often please
-  if (outOfBounds((int)pBatHandler_->getSOC(), currentSOC, 4)) {
+  if (outOfBounds((int)pBatHandler_->getSOC(), currentSOC, 2)) {
     printSOC(x + 12, y + 25);
   }
 }
@@ -273,4 +261,28 @@ void displayHandler::drawBatteryIcon(int x, int y) {
   tft.drawCircle(x + 30, y + 30, 30, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 25, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 20, TFT_GREEN);
+}
+
+void displayHandler::drawBLEIcon(int x, int y, bool connected) {
+
+  if (connected && !BLEconnOn) {
+    BLEwaitOn = false;
+    BLEconnOn = true;
+  } else if (!connected && !BLEwaitOn) {
+    BLEwaitOn = true;
+    BLEconnOn = false;
+  } else
+    return;
+
+  uint32_t BLE_COLOR = connected ? TFT_WHITE : TFT_RED;
+
+  // draw blue circle with wihte border (2 pixel border)
+  tft.fillCircle(x + 30, y + 30, 30, BLE_COLOR);
+  tft.fillCircle(x + 30, y + 30, 28, TFT_BLUE);
+  // draw BLE symbol
+  tft.drawLine(x + 30, y + 50, x + 30, y + 10, BLE_COLOR); // long vertical
+  tft.drawLine(x + 15, y + 40, x + 45, y + 20, BLE_COLOR); // diagonal center up
+  tft.drawLine(x + 15, y + 20, x + 45, y + 40, BLE_COLOR); // diag. cntr down
+  tft.drawLine(x + 30, y + 50, x + 45, y + 40, BLE_COLOR);
+  tft.drawLine(x + 30, y + 10, x + 45, y + 20, BLE_COLOR);
 }

@@ -6,6 +6,7 @@
  */
 
 #include "Defines/hardwareDef.hpp"
+#include "EncoderHandler.hpp"
 #include "batteryHandler.hpp"
 #include "debugSettings.hpp"
 #include "displayHandler.hpp" // for testing display
@@ -22,6 +23,7 @@ keyboardHandler kbdHandler(&srHandler);
 batteryHandler batHandler;
 rgbHandler RGBHandler;
 displayHandler dspHandler(&batHandler, &kbdHandler);
+EncoderHandler encHandler;
 
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
@@ -46,13 +48,15 @@ void setup() {
   kbdHandler.init();
   srHandler.init();
   kbd.begin();
-  kbdHandler.setScanDelay(0); // function call disabled for now
 
   // ----------init battery handler
   batHandler.init();
 
   // ----------init RGB handler
   RGBHandler.init();
+
+  // ----------init Rotary Encoder
+  encHandler.init();
 
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
@@ -62,23 +66,32 @@ void setup() {
 
 void Loop0_(void *param) {
   // setup section for loop0:
+  RGBHandler.setConstColor(CRGB::Red);
 
   //__________________RUN Loop0
   while (true) {
-    // if (!kbd.isConnected()) {
-    //  dspHandler.waitForConnectionScreen();
-    //  kbdHandler.waitForConnection();
-    //  dspHandler.connectedScreen();
-    //}
-    //  // TODO : update every 5 minutes or so....
-    // batHandler.updateBateryHandler();
-    // dspHandler.updateChargeIcon();
-    // dspHandler.bongoMODE();
-    dspHandler.mainScreen();
+    switch (kbdHandler.modeSet) {
+    case 0:
+      dspHandler.mainScreen();
+      break;
+    case 1:
+      dspHandler.bongoMODE();
+      break;
+    default:
+      dspHandler.mainScreen();
+      break;
+    }
+
+    // scanning the rotary encoder and its pushbutton
+    encHandler.updateVolume();
+
+    // test zone
+    // TODO: create settings mode to set color and or effects
+    RGBHandler.brightnessSlider();
   }
 }
 
-void Loop1_(void *param) {
+void Loop1_(void *param) { // explicitly for scanning the btn matrix
   // setup section for loop1:
   //__________________RUN Loop1 (default core)
   while (true) {

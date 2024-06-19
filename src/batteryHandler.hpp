@@ -12,7 +12,6 @@
 #include <Arduino.h>
 #include <math.h>
 
-
 class batteryHandler {
 public:
   void init() {
@@ -52,7 +51,7 @@ public:
 
 private:
   float voltage = 0.0; // Variable to keep track of LiPo voltage
-  float soc = 0.0;     // Variable to keep track of LiPo state-of-charge (SOC)
+  int soc = 0;         // Variable to keep track of LiPo state-of-charge (SOC)
   bool alert = false;  // keep track of whether alert has been triggered
 
   // 50/50 voltage devider bounds

@@ -17,9 +17,7 @@ BleKeyboard kbd("tigmit_Board", "tigmit", 100);
 class keyboardHandler {
 public:
   keyboardHandler(shiftRegisterHandler *srh)
-      : pSrHandler_(srh){
-
-        }; // default constructor
+      : pSrHandler_(srh){}; // default constructor
 
   /**
    * @brief initialize all the row pins
@@ -41,28 +39,12 @@ public:
   }
 
   /**
-   * @brief waiting for BT connection
-   * @return void
-   * @param none
-   */
-  void waitForConnection() {
-    Serial.println("waiting for connection....");
-    while (!kbd.isConnected()) {
-      digitalWrite(LED_BUILTIN, HIGH);
-      delay(BleConnectionBlinkDelay);
-      digitalWrite(LED_BUILTIN, LOW);
-      delay(BleConnectionBlinkDelay);
-    }
-    digitalWrite(LED_BUILTIN, HIGH);
-    Serial.println("---> BT Connection established :3");
-  }
-
-  /**
    * @brief scanning each key and listening for keypresses
    * @return void
    * @param none
    */
   void updateKeyMatrix() {
+    // if we are not connected we don't do anything here
     if (!kbd.isConnected())
       return;
 
@@ -71,13 +53,10 @@ public:
       SPI.transfer16((uint16_t(1 << colIdx))); // set one row to VCC
       digitalWrite(SRCLK_latch, HIGH);         // latch col to scan
       digitalWrite(SRCLK_latch, LOW);
-      delayMicroseconds(100); // needed
+      delayMicroseconds(100); // needed for the shiftregister to set the outputs
       //_____________________________________________________scan cols
       for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
         if (digitalRead(rows[rowIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
-// pressed must be synchron to the scanned row.. might need to play
-// with the shift register here key press detected (MSBFIRST or
-// LSBFIRST)
 #ifndef DISABLE_BLE_OUTPUT
           kbd.press(layout1[layerIdx][rowIdx][colIdx]);
 #endif
@@ -95,13 +74,15 @@ public:
 
           // for bongo mode
           keyPressToggle = !keyPressToggle;
-          // bongo end
+          // for DSPL toggle:
+          if (rowIdx == 5 && colIdx == 10) { // this is the FN key.
+            // advance display mode.
+            modeSet++;
+            modeSet %= numModes;
+          }
 
         } else if (!digitalRead(rows[rowIdx]) &&
                    pressed[layerIdx][rowIdx][colIdx]) {
-          // pressed must be synchron to the scanned row.. might need to play
-          // with the shift register here key press detected
-          // key was released
 
 #ifndef DISABLE_BLE_OUTPUT
           kbd.release(layout1[layerIdx][rowIdx][colIdx]);
@@ -117,7 +98,6 @@ public:
           Serial.println(" ");
 #endif
         }
-        // delay(scanDelay); // probably dont wanna use this
       }
     }
   }
@@ -129,25 +109,21 @@ public:
     //}
   }
 
-  /**
-   * @brief setting the delay between scanning EACH key
-   * @return void
-   * @param none
-   */
-  void setScanDelay(int milliSeconds) { scanDelay = milliSeconds; }
-
   bool getKeyPressToggle() { return keyPressToggle; }
 
+  // Dspl mode vareables
+  int modeSet = 0;  // which mode is currently active?
+  int numModes = 2; // how many modes are available
 private:
   // TODO:: once we introduce Layers this needs to be itterated
   bool keyPressToggle = false;
 
   int layerIdx = 0;
-  int scanDelay = 1000;
   int BleConnectionBlinkDelay = 500;
 
   int currentVolume_ = 0;
   int readVolume = 0;
   int sliderbounds = 10;
+
   shiftRegisterHandler *pSrHandler_;
 };
