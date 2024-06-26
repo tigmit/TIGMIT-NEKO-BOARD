@@ -74,12 +74,3 @@ Following changes need to be made:
 ----
 
 connect these pins as per the defines and you should be good to go.
-
-@startuml
-Object <|-- ArrayList
-
-Object : equals()
-ArrayList : Object[] elementData
-ArrayList : size()
-
-@enduml
