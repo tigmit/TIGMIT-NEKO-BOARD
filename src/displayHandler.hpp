@@ -20,6 +20,7 @@
 #include "debugSettings.hpp"
 #include "helpers.hpp"
 #include "keyBoardHandler.hpp"
+#include "rgbHandler.hpp"
 #include <PNGdec.h>
 
 #include "immages/allImmages.hpp"
@@ -38,8 +39,10 @@ void pngDraw(PNGDRAW *pDraw);
 
 class displayHandler {
 public:
-  displayHandler(batteryHandler *pBatHandler, keyboardHandler *pKbdHandler)
-      : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler) {
+  displayHandler(batteryHandler *pBatHandler, keyboardHandler *pKbdHandler,
+                 rgbHandler *pRgbHandler)
+      : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler),
+        pRgbHandler_(pRgbHandler) {
     ;
   }
 
@@ -93,7 +96,6 @@ public:
   }
 
   void initSprites() {
-
     // charging Lightning Sprite
     chargeLightning.setColorDepth(1);
     chargeLightning.createSprite(20, 30);
@@ -116,6 +118,7 @@ public:
   // ____________________________________________DISPLAY MODES________________
   void mainScreen();
   void bongoMODE(); // drumm the bongo hehe
+  void RgbSettingsMODE();
 
 private:
   void printPNG(const byte *image, int size, int16_t x = 0, int16_t y = 0) {
@@ -154,8 +157,10 @@ private:
   TFT_eSprite chargeLightning = TFT_eSprite(&tft);
   TFT_eSprite SOCtext = TFT_eSprite(&tft);
 
+  // refferences
   batteryHandler *pBatHandler_ = nullptr;
   keyboardHandler *pKbdHandler_ = nullptr;
+  rgbHandler *pRgbHandler_ = nullptr;
 };
 
 // This next function will be called during decoding of the png file to
@@ -232,6 +237,8 @@ void displayHandler::bongoMODE() {
     handsOffCount++;
   }
 }
+
+void displayHandler::RgbSettingsMODE() { tft.fillScreen(TFT_BLUE); }
 
 void displayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
 

@@ -9,20 +9,19 @@
 #include "EncoderHandler.hpp"
 #include "batteryHandler.hpp"
 #include "debugSettings.hpp"
-#include "displayHandler.hpp" // for testing display
+#include "displayHandler.hpp"
 #include "keyboardHandler.hpp"
 #include "layout.hpp"
 #include "rgbHandler.hpp"
 #include "shiftRegisterHandler.hpp"
 
 #include <Arduino.h>
-#include <BleKeyboard.h>
 
 shiftRegisterHandler srHandler;
 keyboardHandler kbdHandler(&srHandler);
 batteryHandler batHandler;
 rgbHandler RGBHandler;
-displayHandler dspHandler(&batHandler, &kbdHandler);
+displayHandler dspHandler(&batHandler, &kbdHandler, &RGBHandler);
 EncoderHandler encHandler;
 
 // setup Task handles
@@ -32,11 +31,6 @@ void Loop1_(void *param);
 void Loop0_(void *param);
 
 void setup() {
-  // setCpuFrequencyMhz(160); //not tested but i am assuming that the scanning
-  // will be to slow.. i want to reach at least 1/1ms = 1kHz matrix scan
-  // frequency. if the -O2 setting doesnt work i can try setting the cpu freq
-  // higher.. at the cost of battery life tho.... damn
-
   Serial.begin(115200);
 
   // ----------init display
@@ -69,7 +63,7 @@ void Loop0_(void *param) {
   RGBHandler.setConstColor(CRGB::Red);
 
   //__________________RUN Loop0
-  while (true) {
+  while (true) { // TODO: implement Statemachine
     switch (kbdHandler.modeSet) {
     case 0:
       dspHandler.mainScreen();

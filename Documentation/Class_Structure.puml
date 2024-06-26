@@ -1,0 +1,64 @@
+@startuml classStructure
+
+protocol loop_Core0
+
+protocol loop_Core1
+
+class ShiftRegisterHandler
+ShiftRegisterHandler : init()
+ShiftRegisterHandler : latch()
+
+class keyBoardHandler
+keyBoardHandler : init()
+keyBoardHandler : updateKeyMatrix()
+keyBoardHandler : *pSrHandler_
+
+class displayHandler
+displayHandler : init()
+displayHandler : startiScreen()
+displayHandler : mainScreen()
+displayHandler : bongoScreen()
+displayHandler : *pBatHandler_
+displayHandler : *pKbdHandler_
+displayHandler : *pRgbInterface_
+
+interface RgbInterface
+RgbInterface : virtual SetColors(r,g,b)      
+RgbInterface : virtual setBrightnes(val)     
+RgbInterface : virtual setEffect(effectCode)
+
+class RgbHandler
+RgbHandler : init()
+RgbHandler : virtual SetColors(r,g,b)     
+RgbHandler : virtual setBrightnes(val)    
+RgbHandler : virtual setEffect(effectCode)
+RgbHandler : effectPulse()
+RgbHandler : effectStatic()
+RgbHandler : ...()
+
+class BatteryHandler
+BatteryHandler : init()
+BatteryHandler : updateBatteryHandler()
+BatteryHandler : Voltage
+BatteryHandler : SOC
+
+class encHandler
+encHandler : init()
+encHandler : updateEnc()
+
+
+keyBoardHandler ..> ShiftRegisterHandler
+displayHandler ..> BatteryHandler
+displayHandler ..> keyBoardHandler
+displayHandler --> RgbInterface
+displayHandler <--> encHandler
+
+RgbInterface <|-- RgbHandler
+
+loop_Core1 -- keyBoardHandler
+
+loop_Core0 -- displayHandler
+
+
+
+@enduml
