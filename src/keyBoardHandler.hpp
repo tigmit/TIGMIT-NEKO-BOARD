@@ -7,10 +7,10 @@
  */
 #pragma once
 #include "Defines\hardwareDef.hpp"
+#include "ShiftRegisterHandler.hpp"
 #include "debugSettings.hpp"
 #include "helpers.hpp"
 #include "layout.hpp"
-#include "ShiftRegisterHandler.hpp"
 #include <BleKeyboard.h>
 
 BleKeyboard kbd("tigmit_Board", "tigmit", 100);

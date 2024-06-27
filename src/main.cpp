@@ -15,7 +15,6 @@
 #include "debugSettings.hpp"
 #include "layout.hpp"
 
-
 #include <Arduino.h>
 
 ShiftRegisterHandler srHandler;
