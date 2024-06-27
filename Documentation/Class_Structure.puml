@@ -8,19 +8,19 @@ class ShiftRegisterHandler
 ShiftRegisterHandler : init()
 ShiftRegisterHandler : latch()
 
-class keyBoardHandler
-keyBoardHandler : init()
-keyBoardHandler : updateKeyMatrix()
-keyBoardHandler : *pSrHandler_
+class KeyboardHandler
+KeyboardHandler : init()
+KeyboardHandler : updateKeyMatrix()
+KeyboardHandler : *pSrHandler_
 
-class displayHandler
-displayHandler : init()
-displayHandler : startiScreen()
-displayHandler : mainScreen()
-displayHandler : bongoScreen()
-displayHandler : *pBatHandler_
-displayHandler : *pKbdHandler_
-displayHandler : *pRgbInterface_
+class DisplayHandler
+DisplayHandler : init()
+DisplayHandler : startiScreen()
+DisplayHandler : mainScreen()
+DisplayHandler : bongoScreen()
+DisplayHandler : *pBatHandler_
+DisplayHandler : *pKbdHandler_
+DisplayHandler : *pRgbInterface_
 
 interface RgbInterface
 RgbInterface : virtual SetColors(r,g,b)      
@@ -47,17 +47,17 @@ encHandler : init()
 encHandler : updateEnc()
 
 
-keyBoardHandler ..> ShiftRegisterHandler
-displayHandler ..> BatteryHandler
-displayHandler ..> keyBoardHandler
-displayHandler --> RgbInterface
-displayHandler <--> encHandler
+KeyboardHandler ..> ShiftRegisterHandler
+DisplayHandler ..> BatteryHandler
+DisplayHandler ..> KeyboardHandler
+DisplayHandler --> RgbInterface
+DisplayHandler <--> encHandler
 
 RgbInterface <|-- RgbHandler
 
-loop_Core1 -- keyBoardHandler
+loop_Core1 -- KeyboardHandler
 
-loop_Core0 -- displayHandler
+loop_Core0 -- DisplayHandler
 
 
 

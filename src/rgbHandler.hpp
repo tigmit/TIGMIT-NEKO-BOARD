@@ -1,5 +1,5 @@
 /**
- * rgbHandler.hpp
+ * RgbHandler.hpp
  * brief   : this class handles all the tasks to controll the pixel LEDs.
  * created : 13.06.2024
  * creator : @tigmit Licence : opensource
@@ -12,9 +12,9 @@
 #define NUM_LEDS 81
 #define DATA_PIN 19
 
-class rgbHandler { // under construction!!
+class RgbHandler { // under construction!!
 public:
-  rgbHandler() = default;
+  RgbHandler() = default;
 
   void init() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);

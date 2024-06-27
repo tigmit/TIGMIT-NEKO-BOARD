@@ -1,5 +1,5 @@
 /**
- * shiftRegisterHandler.hpp
+ * ShiftRegisterHandler.hpp
  * brief   : handles shift register tasks
  * created : 29.05.2024
  * creator : @tigmit Licence : opensource
@@ -9,9 +9,9 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-class shiftRegisterHandler {
+class ShiftRegisterHandler {
 public:
-  shiftRegisterHandler() = default;
+  ShiftRegisterHandler() = default;
 
   void init() {
     pinMode(SRCLK_latch, OUTPUT);

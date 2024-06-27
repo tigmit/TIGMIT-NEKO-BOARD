@@ -5,23 +5,24 @@
  * creator : @tigmit Licence : opensource
  */
 
+#include "BatteryHandler.hpp"
 #include "Defines/hardwareDef.hpp"
+#include "DisplayHandler.hpp"
 #include "EncoderHandler.hpp"
-#include "batteryHandler.hpp"
+#include "KeyboardHandler.hpp"
+#include "RgbHandler.hpp"
+#include "ShiftRegisterHandler.hpp"
 #include "debugSettings.hpp"
-#include "displayHandler.hpp"
-#include "keyboardHandler.hpp"
 #include "layout.hpp"
-#include "rgbHandler.hpp"
-#include "shiftRegisterHandler.hpp"
+
 
 #include <Arduino.h>
 
-shiftRegisterHandler srHandler;
-keyboardHandler kbdHandler(&srHandler);
-batteryHandler batHandler;
-rgbHandler RGBHandler;
-displayHandler dspHandler(&batHandler, &kbdHandler, &RGBHandler);
+ShiftRegisterHandler srHandler;
+KeyboardHandler kbdHandler(&srHandler);
+BatteryHandler batHandler;
+RgbHandler rgbHandler;
+DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler);
 EncoderHandler encHandler;
 
 // setup Task handles
@@ -47,7 +48,7 @@ void setup() {
   batHandler.init();
 
   // ----------init RGB handler
-  RGBHandler.init();
+  rgbHandler.init();
 
   // ----------init Rotary Encoder
   encHandler.init();
@@ -60,7 +61,7 @@ void setup() {
 
 void Loop0_(void *param) {
   // setup section for loop0:
-  RGBHandler.setConstColor(CRGB::Red);
+  rgbHandler.setConstColor(CRGB::Red);
 
   //__________________RUN Loop0
   while (true) { // TODO: implement Statemachine
@@ -81,7 +82,7 @@ void Loop0_(void *param) {
 
     // test zone
     // TODO: create settings mode to set color and or effects
-    RGBHandler.brightnessSlider();
+    rgbHandler.brightnessSlider();
   }
 }
 

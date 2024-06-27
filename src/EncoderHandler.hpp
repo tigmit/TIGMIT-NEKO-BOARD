@@ -6,11 +6,12 @@
 #pragma once
 
 #include "Defines/hardwareDef.hpp"
+#include "KeyboardHandler.hpp"
 #include "debugSettings.hpp"
-#include "keyBoardHandler.hpp"
 #include <Arduino.h>
 #include <ESP32Encoder.h> // https://github.com/madhephaestus/ESP32Encoder.git
 #include <math.h>
+
 
 class EncoderHandler {
 public:

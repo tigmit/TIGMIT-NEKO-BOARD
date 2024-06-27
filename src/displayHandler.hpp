@@ -1,6 +1,6 @@
 /**
- * displayHandler.hpp
- * brief   : this class handles all the tasks of the displayHandler.
+ * DisplayHandler.hpp
+ * brief   : this class handles all the tasks of the DisplayHandler.
  * created : 26.05.2024
  * creator : @tigmit Licence : opensource
  */
@@ -15,12 +15,12 @@
 //   5. use the array in your display designs
 
 #pragma once
+#include "BatteryHandler.hpp"
 #include "Defines\displayDef.hpp"
-#include "batteryHandler.hpp"
 #include "debugSettings.hpp"
 #include "helpers.hpp"
-#include "keyBoardHandler.hpp"
-#include "rgbHandler.hpp"
+#include "KeyboardHandler.hpp"
+#include "RgbHandler.hpp"
 #include <PNGdec.h>
 
 #include "immages/allImmages.hpp"
@@ -37,10 +37,10 @@ int16_t ypos = 0;
 
 void pngDraw(PNGDRAW *pDraw);
 
-class displayHandler {
+class DisplayHandler {
 public:
-  displayHandler(batteryHandler *pBatHandler, keyboardHandler *pKbdHandler,
-                 rgbHandler *pRgbHandler)
+  DisplayHandler(BatteryHandler *pBatHandler, KeyboardHandler *pKbdHandler,
+                 RgbHandler *pRgbHandler)
       : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler),
         pRgbHandler_(pRgbHandler) {
     ;
@@ -162,9 +162,9 @@ private:
   TFT_eSprite SOCtext = TFT_eSprite(&tft);
 
   // refferences
-  batteryHandler *pBatHandler_ = nullptr;
-  keyboardHandler *pKbdHandler_ = nullptr;
-  rgbHandler *pRgbHandler_ = nullptr;
+  BatteryHandler *pBatHandler_ = nullptr;
+  KeyboardHandler *pKbdHandler_ = nullptr;
+  RgbHandler *pRgbHandler_ = nullptr;
 };
 
 // This next function will be called during decoding of the png file to
@@ -179,7 +179,7 @@ void pngDraw(PNGDRAW *pDraw) {
 
 //_____________________________________________IMPLEMENTATIONS________
 
-void displayHandler::mainScreen() {
+void DisplayHandler::mainScreen() {
   if (!wallpaperOn) {
     printPNG(wallpaper240X240, sizeof(wallpaper240X240), 0, 0);
     wallpaperOn = true;
@@ -194,7 +194,7 @@ void displayHandler::mainScreen() {
   drawBLEIcon(25, 70, kbd.isConnected());
 }
 
-void displayHandler::bongoMODE() {
+void DisplayHandler::bongoMODE() {
   wallpaperOn = false;
   BLEwaitOn = false;
   BLEconnOn = false;
@@ -242,9 +242,9 @@ void displayHandler::bongoMODE() {
   }
 }
 
-void displayHandler::RgbSettingsMODE() { tft.fillScreen(TFT_BLUE); }
+void DisplayHandler::RgbSettingsMODE() { tft.fillScreen(TFT_BLUE); }
 
-void displayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
+void DisplayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
 
   if (pBatHandler_->isCharging() && !chargeFlashOn) {
 
@@ -267,14 +267,14 @@ void displayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
   }
 }
 
-void displayHandler::drawBatteryIcon(int x, int y, u_int32_t BGcolor) {
+void DisplayHandler::drawBatteryIcon(int x, int y, u_int32_t BGcolor) {
   tft.fillCircle(x + 30, y + 30, 31, BGcolor);
   tft.drawCircle(x + 30, y + 30, 30, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 25, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 20, TFT_GREEN);
 }
 
-void displayHandler::drawBLEIcon(int x, int y, bool connected) {
+void DisplayHandler::drawBLEIcon(int x, int y, bool connected) {
 
   if (connected && !BLEconnOn) {
     BLEwaitOn = false;

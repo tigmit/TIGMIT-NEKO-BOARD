@@ -1,5 +1,5 @@
 /**
- * keyboardHandler.hpp
+ * KeyboardHandler.hpp
  * brief   : this class handles all the tasks of the keymatrix such as scanning
  *           inputs and initializing the array
  * created : 25.05.2024
@@ -10,13 +10,13 @@
 #include "debugSettings.hpp"
 #include "helpers.hpp"
 #include "layout.hpp"
-#include "shiftRegisterHandler.hpp"
+#include "ShiftRegisterHandler.hpp"
 #include <BleKeyboard.h>
 
 BleKeyboard kbd("tigmit_Board", "tigmit", 100);
-class keyboardHandler {
+class KeyboardHandler {
 public:
-  keyboardHandler(shiftRegisterHandler *srh)
+  KeyboardHandler(ShiftRegisterHandler *srh)
       : pSrHandler_(srh){}; // default constructor
 
   /**
@@ -128,5 +128,5 @@ private:
   int sliderbounds = 10;
 
   // dependecies
-  shiftRegisterHandler *pSrHandler_;
+  ShiftRegisterHandler *pSrHandler_;
 };

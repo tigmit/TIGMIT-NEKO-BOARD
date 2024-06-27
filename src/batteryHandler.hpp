@@ -1,5 +1,5 @@
 /**
- * batteryHandler.hpp
+ * BatteryHandler.hpp
  * brief   : this class handles all the tasks required to handle the battery
  * created : 25.05.2024
  * creator : @tigmit Licence : opensource
@@ -8,11 +8,11 @@
 
 #include "Defines/hardwareDef.hpp"
 #include "debugSettings.hpp"
-#include "keyBoardHandler.hpp"
+#include "KeyboardHandler.hpp"
 #include <Arduino.h>
 #include <math.h>
 
-class batteryHandler {
+class BatteryHandler {
 public:
   void init() {
     pinMode(BatterySense, INPUT);
