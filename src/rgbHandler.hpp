@@ -12,7 +12,7 @@
 #define NUM_LEDS 81
 #define DATA_PIN 19
 
-class rgbHandler {
+class rgbHandler { // under construction!!
 public:
   rgbHandler() = default;
 

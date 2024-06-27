@@ -47,6 +47,10 @@ public:
   }
 
   void init() {
+    // make sure dependecies arent NULL!
+    assert(pBatHandler_);
+    assert(pKbdHandler_);
+    assert(pRgbHandler_);
     // Initialise the TFT
     tft.begin();
     tft.fillScreen(TFT_BLACK);

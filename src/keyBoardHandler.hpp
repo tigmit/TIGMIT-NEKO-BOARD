@@ -25,7 +25,10 @@ public:
    * @param none
    */
   void init() {
+    // make sure dependecies arent NULL!
+    assert(pSrHandler_);
     // Initialize row INPUT pin and set default state
+
     for (int i = 0; i < numRows; i++) {
       pinMode(rows[i], INPUT);
     }
