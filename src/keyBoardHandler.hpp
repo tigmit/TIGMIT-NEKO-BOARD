@@ -54,8 +54,7 @@ public:
     //_______________________________________________________scan rwos
     for (int colIdx = 0; colIdx < numCols; colIdx++) {
       SPI.transfer16((uint16_t(1 << colIdx))); // set one row to VCC
-      digitalWrite(SRCLK_latch, HIGH);         // latch col to scan
-      digitalWrite(SRCLK_latch, LOW);
+      pSrHandler_->latch();
       delayMicroseconds(100); // needed for the shiftregister to set the outputs
       //_____________________________________________________scan cols
       for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
@@ -77,7 +76,8 @@ public:
 
           // for bongo mode
           keyPressToggle = !keyPressToggle;
-          // for DSPL toggle:
+          // for DSPL toggle: // for testing only. modeSet will be controlled
+          // via the encoder in the future
           if (rowIdx == 5 && colIdx == 10) { // this is the FN key.
             // advance display mode.
             modeSet++;
@@ -112,21 +112,21 @@ public:
     //}
   }
 
-  bool getKeyPressToggle() { return keyPressToggle; }
+  bool getKeyPressToggle() const { return keyPressToggle; }
 
   // Dspl mode vareables
   int modeSet = 0;  // which mode is currently active?
   int numModes = 2; // how many modes are available
 private:
-  // TODO:: once we introduce Layers this needs to be itterated
   bool keyPressToggle = false;
 
+  // NOTE: once i introduce Layers this is used to toggle these layers
   int layerIdx = 0;
-  int BleConnectionBlinkDelay = 500;
 
   int currentVolume_ = 0;
   int readVolume = 0;
   int sliderbounds = 10;
 
+  // dependecies
   shiftRegisterHandler *pSrHandler_;
 };
