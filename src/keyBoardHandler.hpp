@@ -16,8 +16,7 @@
 BleKeyboard kbd("tigmit_Board", "tigmit", 100);
 class KeyboardHandler {
 public:
-  KeyboardHandler(ShiftRegisterHandler *srh)
-      : pSrHandler_(srh){}; // default constructor
+  KeyboardHandler(ShiftRegisterHandler *srh) : pSrHandler_(srh){};
 
   /**
    * @brief initialize all the row pins
