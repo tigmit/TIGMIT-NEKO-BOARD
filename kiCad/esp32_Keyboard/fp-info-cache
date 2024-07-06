@@ -1,4 +1,4 @@
-25068658051961947
+25137452916321662
 Audio_Module
 Reverb_BTDR-1H
 Digital Reverberation Unit, http://www.belton.co.kr/inc/downfile.php?seq=17&file=pdf (footprint from http://www.uk-electronic.de/PDF/BTDR-1.pdf)
@@ -6411,6 +6411,286 @@ capacitor tantalum
 0
 2
 2
+CherryMX_KailhSocket_LED
+CherryMX_1.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 1.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: n/a, Lighting: 2 pin LED
+CherryMX 1.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_1.25u_KailhSocket_LED
+Cherry MX switch footprint. Size: 1.25u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: n/a, Lighting: 2 pin LED
+CherryMX 1.25u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_1.50u_KailhSocket_LED
+Cherry MX switch footprint. Size: 1.50u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: n/a, Lighting: 2 pin LED
+CherryMX 1.50u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_1.75u_KailhSocket_LED
+Cherry MX switch footprint. Size: 1.75u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: n/a, Lighting: 2 pin LED
+CherryMX 1.75u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_2.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 2.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 2.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_2.25u_KailhSocket_LED
+Cherry MX switch footprint. Size: 2.25u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 2.25u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_2.50u_KailhSocket_LED
+Cherry MX switch footprint. Size: 2.50u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 2.50u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_2.75u_KailhSocket_LED
+Cherry MX switch footprint. Size: 2.75u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 2.75u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_3.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 3.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 3.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_4.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 4.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 4.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_4.50u_KailhSocket_LED
+Cherry MX switch footprint. Size: 4.50u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 4.50u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_5.50u_KailhSocket_LED
+Cherry MX switch footprint. Size: 5.50u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 5.50u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_6.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 6.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 6.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_6.25u_KailhSocket_LED
+Cherry MX switch footprint. Size: 6.25u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 6.25u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_6.50u_KailhSocket_LED
+Cherry MX switch footprint. Size: 6.50u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 6.50u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_7.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 7.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 7.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_8.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 8.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 8.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_9.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 9.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 9.00u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_9.75u_KailhSocket_LED
+Cherry MX switch footprint. Size: 9.75u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 9.75u KailhSocket LED
+0
+4
+4
+CherryMX_KailhSocket_LED
+CherryMX_10.00u_KailhSocket_LED
+Cherry MX switch footprint. Size: 10.00u, Mount type: Plate, Using Kailh Socket: yes, Stabilizer: Plate mounted, Lighting: 2 pin LED
+CherryMX 10.00u KailhSocket LED
+0
+4
+4
+CherryMX_LTST-A683CEGBW
+CherryMX_1.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 1.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: n/a, Lighting: LTST-A683CEGBW
+CherryMX 1.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_1.25u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 1.25u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: n/a, Lighting: LTST-A683CEGBW
+CherryMX 1.25u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_1.50u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 1.50u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: n/a, Lighting: LTST-A683CEGBW
+CherryMX 1.50u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_1.75u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 1.75u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: n/a, Lighting: LTST-A683CEGBW
+CherryMX 1.75u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_2.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 2.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 2.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_2.25u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 2.25u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 2.25u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_2.50u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 2.50u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 2.50u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_2.75u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 2.75u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 2.75u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_3.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 3.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 3.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_4.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 4.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 4.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_4.50u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 4.50u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 4.50u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_5.50u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 5.50u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 5.50u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_6.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 6.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 6.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_6.25u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 6.25u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 6.25u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_6.50u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 6.50u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 6.50u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_7.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 7.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 7.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_8.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 8.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 8.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_9.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 9.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 9.00u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_9.75u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 9.75u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 9.75u LTST-A683CEGBW
+0
+6
+6
+CherryMX_LTST-A683CEGBW
+CherryMX_10.00u_LTST-A683CEGBW
+Cherry MX switch footprint. Size: 10.00u, Mount type: Plate, Using Kailh Socket: no, Stabilizer: Plate mounted, Lighting: LTST-A683CEGBW
+CherryMX 10.00u LTST-A683CEGBW
+0
+6
+6
 Connector
 Banana_Cliff_FCR7350B_S16N-PC_Horizontal
 Cliff single 4mm shrouded banana panel socket, through-hole, horizontal, black, https://www.cliffuk.co.uk/products/testleads/sockets/S16NPC.pdf

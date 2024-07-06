@@ -409,7 +409,7 @@
 			(width 0.05)
 			(type solid)
 		)
-		(fill solid)
+		(fill none)
 		(layer "Edge.Cuts")
 		(uuid "750815c4-08f4-4a98-a805-27848e5281c0")
 	)
