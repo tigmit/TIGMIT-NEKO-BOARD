@@ -7,14 +7,15 @@
 
 #pragma once
 
+#include "EncoderHandler.hpp"
 #include <FastLED.h>
 
 #define NUM_LEDS 81
 #define DATA_PIN 19
 
-class RgbHandler { // under construction!!
+class RgbHandler {
 public:
-  RgbHandler() = default;
+  RgbHandler(EncoderHandler *pEncHandler) : pEncHandler_(pEncHandler) { ; }
 
   void init() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -28,10 +29,16 @@ public:
     FastLED.show();
   }
 
-  void setConstColor(int color) {
+  void setConstColor(CRGB color) {
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = color;
     }
+    FastLED.show();
+  }
+
+  void setBrightnes(u_int8_t val) {
+    FastLED.setBrightness(val);
+    FastLED.show();
   }
 
   void brightnessSlider() {
@@ -39,7 +46,12 @@ public:
     FastLED.show();
   }
 
-  void randomRainbowMode() { // obviously this mode is bullshit XD
+  void colorSettingRotary() {
+    // this doesnt work like thgat yet
+    setConstColor((CRGB)pEncHandler_->updateColorPosition());
+  }
+
+  void randomRainbowMode() {
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = random(0xFFFFFF);
     }
@@ -47,11 +59,20 @@ public:
     delay(100); // obviously this mode is bullshit XD
   }
 
-private:
-  // How many leds in your strip?
+  void startupSequence() {
+    FastLED.setBrightness(defaultBrightnes);
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds[i] = CRGB::Purple;
+      FastLED.show();
+      delay(12);
+    }
+  }
 
+private:
   // Define the array of leds
   CRGB leds[NUM_LEDS];
+  u_int8_t defaultBrightnes = 15;
+  EncoderHandler *pEncHandler_ = nullptr;
 };
 
 // NOTE BY ME TIGMIT

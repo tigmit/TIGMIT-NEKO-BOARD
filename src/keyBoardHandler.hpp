@@ -50,12 +50,12 @@ public:
     if (!kbd.isConnected())
       return;
 
-    //_______________________________________________________scan rwos
+    //_______________________________________________________scan colls
     for (int colIdx = 0; colIdx < numCols; colIdx++) {
-      SPI.transfer16((uint16_t(1 << colIdx))); // set one row to VCC
+      SPI.transfer16((uint16_t(1 << colIdx))); // set one Coll to VCC
       pSrHandler_->latch();
       delayMicroseconds(100); // needed for the shiftregister to set the outputs
-      //_____________________________________________________scan cols
+      //_____________________________________________________scan Rows
       for (int rowIdx = 0; rowIdx < numRows; rowIdx++) {
         if (digitalRead(rows[rowIdx]) && !pressed[layerIdx][rowIdx][colIdx]) {
 #ifndef DISABLE_BLE_OUTPUT
