@@ -12,7 +12,6 @@
 #include <ESP32Encoder.h> // https://github.com/madhephaestus/ESP32Encoder.git
 #include <math.h>
 
-
 class EncoderHandler {
 public:
   EncoderHandler() = default;
@@ -24,12 +23,12 @@ public:
   }
 
   void updateVolume() {
-    newPosition = encoder.getCount() / 2;
-    if (newPosition > 0) {
+    VolPosition = encoder.getCount() / 2;
+    if (VolPosition > 0) {
       kbd.write(KEY_MEDIA_VOLUME_UP);
       encoder.clearCount();
 
-    } else if (newPosition < 0) {
+    } else if (VolPosition < 0) {
       kbd.write(KEY_MEDIA_VOLUME_DOWN);
       encoder.clearCount();
     }
@@ -46,15 +45,21 @@ public:
   }
 
   void printPosition() {
-    newPosition = encoder.getCount() / 2;
-    Serial.println(newPosition);
+    VolPosition = encoder.getCount() / 2;
+    Serial.println(VolPosition);
     if (digitalRead(encBTN) == LOW) {
       Serial.println("Button pressed");
     }
   }
 
+  u_int32_t updateColorPosition() {
+    VolPosition = (encoder.getCount() / 2) % 0xFFFFFF;
+    return VolPosition;
+  }
+
 private:
   ESP32Encoder encoder;
-  long newPosition = 0;
+  long VolPosition = 0;
+  u_int32_t colorPosition = 0;
   bool ecnBtnPressed = false;
 };

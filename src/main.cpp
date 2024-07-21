@@ -20,9 +20,9 @@
 ShiftRegisterHandler srHandler;
 KeyboardHandler kbdHandler(&srHandler);
 BatteryHandler batHandler;
-RgbHandler rgbHandler;
-DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler);
 EncoderHandler encHandler;
+RgbHandler rgbHandler(&encHandler);
+DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler);
 
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
@@ -60,7 +60,9 @@ void setup() {
 
 void Loop0_(void *param) {
   // setup section for loop0:
-  rgbHandler.setConstColor(CRGB::Red);
+  rgbHandler.startupSequence();
+  rgbHandler.setConstColor(CRGB::Aqua);
+  rgbHandler.setBrightnes(15); // full brightness = 0xFF
 
   //__________________RUN Loop0
   while (true) { // TODO: implement Statemachine
@@ -78,10 +80,7 @@ void Loop0_(void *param) {
 
     // scanning the rotary encoder and its pushbutton
     encHandler.updateVolume();
-
-    // test zone
-    // TODO: create settings mode to set color and or effects
-    rgbHandler.brightnessSlider();
+    // rgbHandler.colorSettingRotary();
   }
 }
 

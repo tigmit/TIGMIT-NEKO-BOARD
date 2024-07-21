@@ -30,7 +30,7 @@
 
 // Matrix setup
 #define numRows 6
-#define numCols 16
+#define numCols 15
 #define numLayers 1
 
 // i2C adress for display ESP32

@@ -17,10 +17,10 @@
 #pragma once
 #include "BatteryHandler.hpp"
 #include "Defines\displayDef.hpp"
-#include "debugSettings.hpp"
-#include "helpers.hpp"
 #include "KeyboardHandler.hpp"
 #include "RgbHandler.hpp"
+#include "debugSettings.hpp"
+#include "helpers.hpp"
 #include <PNGdec.h>
 
 #include "immages/allImmages.hpp"
