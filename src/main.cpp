@@ -22,7 +22,7 @@ KeyboardHandler kbdHandler(&srHandler);
 BatteryHandler batHandler;
 EncoderHandler encHandler;
 RgbHandler rgbHandler(&encHandler);
-DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler);
+DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler, &encHandler);
 
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
@@ -40,7 +40,6 @@ void setup() {
   // ----------init keyboard matrix
   Serial.println("Starting BLE work!");
   kbdHandler.init();
-  srHandler.init();
   kbd.begin();
 
   // ----------init battery handler
@@ -66,20 +65,27 @@ void Loop0_(void *param) {
 
   //__________________RUN Loop0
   while (true) { // TODO: implement Statemachine
-    switch (kbdHandler.modeSet) {
+    // updating the mode state
+    encHandler.UpdateModeSelect();
+
+    switch (encHandler.getModeSelected()) {
     case 0:
       dspHandler.mainScreen();
       break;
     case 1:
+      dspHandler.mainScreen();
+      break;
+    case 2:
       dspHandler.bongoMODE();
+      break;
+    case 3:
+      dspHandler.placeHolderScreen();
       break;
     default:
       dspHandler.mainScreen();
       break;
     }
 
-    // scanning the rotary encoder and its pushbutton
-    encHandler.updateVolume();
     // rgbHandler.colorSettingRotary();
   }
 }

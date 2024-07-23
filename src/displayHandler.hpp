@@ -17,6 +17,7 @@
 #pragma once
 #include "BatteryHandler.hpp"
 #include "Defines\displayDef.hpp"
+#include "EncoderHandler.hpp"
 #include "KeyboardHandler.hpp"
 #include "RgbHandler.hpp"
 #include "debugSettings.hpp"
@@ -40,9 +41,9 @@ void pngDraw(PNGDRAW *pDraw);
 class DisplayHandler {
 public:
   DisplayHandler(BatteryHandler *pBatHandler, KeyboardHandler *pKbdHandler,
-                 RgbHandler *pRgbHandler)
+                 RgbHandler *pRgbHandler, EncoderHandler *encHandler)
       : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler),
-        pRgbHandler_(pRgbHandler) {
+        pRgbHandler_(pRgbHandler), pEncHandler_(encHandler) {
     ;
   }
 
@@ -51,34 +52,14 @@ public:
     assert(pBatHandler_);
     assert(pKbdHandler_);
     assert(pRgbHandler_);
+    assert(pEncHandler_);
     // Initialise the TFT
     tft.begin();
-    tft.fillScreen(TFT_BLACK);
+    tft.fillScreen(TFT_WHITE);
     initSprites();
   }
 
-  void startScreen() {
-    tft.fillScreen(TFT_BLACK);
-    tft.setCursor(10, 240 / 2, 4);
-    tft.setTextColor(TFT_WHITE);
-    tft.println(" starting keyboard...\n");
-  }
-
-  void chargingScreen() {
-    // TODO: Show more information about the battery
-    // maybe a SOC graph?
-    tft.fillScreen(TFT_BLACK);
-    tft.setCursor(35, 30, 2);
-    tft.setTextColor(TFT_WHITE);
-    tft.println("  charging (/*_*)/\n");
-    // print voltage
-    tft.print("  Voltage : ");
-    tft.println(pBatHandler_->getVoltage());
-
-    // print SOC
-    tft.print("  SOC     : ");
-    tft.println(pBatHandler_->getSOC());
-  }
+  void startScreen() { printPNG(startscreen, sizeof(startscreen), 0, 0); }
 
   void printSOC(int x, int y) {
     SOCtext.fillSprite(TFT_TRANSPARENT);
@@ -114,17 +95,32 @@ public:
   }
 
   // ____________________________________________DISPLAY ELEMENTS_____________
-  void updateChargeIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
+  void updateChargeIcon(int x = 90, int y = 6, u_int32_t BGcolor = TFT_BLACK);
 
   void drawBatteryIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
+
+  void drawCapslockIcon(int x = 90, int y = 10, bool caps = false);
+
+  void drawSelectWheel(int x = 120, int y = 120);
 
   void drawBLEIcon(int x, int y, bool connected = false);
   // ____________________________________________DISPLAY MODES________________
   void mainScreen();
   void bongoMODE(); // drumm the bongo hehe
   void RgbSettingsMODE();
+  void placeHolderScreen();
 
 private:
+  void resetDspdrawflags() {
+    capsLockON = false;
+    capsLockOFF = false;
+    wallpaperOn = false;
+    BLEwaitOn = false;
+    BLEconnOn = false;
+    battIconOn = false;
+    chargeFlashOn = false;
+  }
+
   void printPNG(const byte *image, int size, int16_t x = 0, int16_t y = 0) {
     xpos = x;
     ypos = y;
@@ -133,7 +129,6 @@ private:
       tft.startWrite();
       rc = png.decode(NULL, 0);
       tft.endWrite();
-      // png.close(); // not needed for memory->memory decode
     }
   }
 
@@ -146,9 +141,12 @@ private:
   bool BLEwaitOn = false;
   bool BLEconnOn = false;
 
+  bool capsLockON = false;
+  bool capsLockOFF = false;
+
   bool wallpaperOn = false;
 
-  u_int32_t handsOfftrigger = 1500000;
+  u_int32_t handsOfftrigger = 700000;
   u_int32_t handsOffCount = handsOfftrigger;
   u_int32_t keyStreak = 0;
 
@@ -156,6 +154,14 @@ private:
   bool battIconOn = false;
 
   float currentSOC = 0;
+
+  int currentMode = 0;
+
+  const uint32_t GuiAngles[5][2] = {
+      {144, 216}, {216, 288}, {288, 360}, {360, 72}, {72, 144}};
+
+  const uint32_t LedSelectRings[6][2] = {{75, 42},   {125, 66}, {178, 87},
+                                         {127, 169}, {73, 172}, {17, 120}};
 
   // Sprites
   TFT_eSprite chargeLightning = TFT_eSprite(&tft);
@@ -165,6 +171,7 @@ private:
   BatteryHandler *pBatHandler_ = nullptr;
   KeyboardHandler *pKbdHandler_ = nullptr;
   RgbHandler *pRgbHandler_ = nullptr;
+  EncoderHandler *pEncHandler_ = nullptr;
 };
 
 // This next function will be called during decoding of the png file to
@@ -188,19 +195,23 @@ void DisplayHandler::mainScreen() {
   // dont do this so often please
   // TODO: utalize esp32 Timer?
   pBatHandler_->updateBateryHandler();
-  updateChargeIcon();
 
-  // update the BLE icon
-  drawBLEIcon(25, 70, kbd.isConnected());
+  // update icons
+  updateChargeIcon(90, 6);
+  drawBLEIcon(10, 64, kbd.isConnected());
+  drawCapslockIcon(170, 64, pKbdHandler_->getCapslockStatus());
+  drawSelectWheel(); // selection wheel
+}
+
+void DisplayHandler::placeHolderScreen() {
+  tft.fillScreen(TFT_MAGENTA);
+  tft.setTextColor(TFT_BLACK);
+  tft.drawString("placeHolder Screen", 20, 120, 4);
 }
 
 void DisplayHandler::bongoMODE() {
-  wallpaperOn = false;
-  BLEwaitOn = false;
-  BLEconnOn = false;
-  battIconOn = false;
-  chargeFlashOn = false;
-  // todo create a function resetDspdrawflags()
+
+  resetDspdrawflags();
 
   if ((handsOffCount >= handsOfftrigger) && !bongoRestOn) {
     tft.fillScreen(TFT_WHITE);
@@ -241,8 +252,6 @@ void DisplayHandler::bongoMODE() {
     handsOffCount++;
   }
 }
-
-void DisplayHandler::RgbSettingsMODE() { tft.fillScreen(TFT_BLUE); }
 
 void DisplayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
 
@@ -287,7 +296,7 @@ void DisplayHandler::drawBLEIcon(int x, int y, bool connected) {
 
   uint32_t BLE_COLOR = connected ? TFT_WHITE : TFT_RED;
 
-  // draw blue circle with wihte border (2 pixel border)
+  // draw blue circle with border (2 pixel border)
   tft.fillCircle(x + 30, y + 30, 30, BLE_COLOR);
   tft.fillCircle(x + 30, y + 30, 28, TFT_BLUE);
   // draw BLE symbol
@@ -296,4 +305,39 @@ void DisplayHandler::drawBLEIcon(int x, int y, bool connected) {
   tft.drawLine(x + 15, y + 20, x + 45, y + 40, BLE_COLOR); // diag. cntr down
   tft.drawLine(x + 30, y + 50, x + 45, y + 40, BLE_COLOR);
   tft.drawLine(x + 30, y + 10, x + 45, y + 20, BLE_COLOR);
+}
+void DisplayHandler::drawCapslockIcon(int x, int y, bool caps) {
+
+  if (!caps && !capsLockOFF) {
+    capsLockON = false;
+    capsLockOFF = true;
+  } else if (caps && !capsLockON) {
+    capsLockON = true;
+    capsLockOFF = false;
+  } else
+    return;
+
+  uint32_t CAPS_COLOR = caps ? TFT_RED : TFT_WHITE;
+
+  // draw grey circle with wihte border (2 pixel border)
+  tft.fillCircle(x + 30, y + 30, 30, CAPS_COLOR);
+  tft.fillCircle(x + 30, y + 30, 24, TFT_LIGHTGREY);
+  // draw caps lock symbol
+  tft.setTextColor(TFT_BLACK);
+  tft.drawString("aA", x + 17, y + 20, 4);
+}
+
+void DisplayHandler::drawSelectWheel(int x, int y) {
+  int modeBuff = pEncHandler_->getModeSet();
+  if (modeBuff != currentMode) {
+    currentMode = modeBuff;
+
+    tft.drawArc(x, y, 50, 47, 0, 360, TFT_BLACK, TFT_BLACK, true);
+    tft.drawArc(x, y, 50, 47, GuiAngles[currentMode][0],
+                GuiAngles[currentMode][1], TFT_GREEN, TFT_BLACK, true);
+  }
+}
+
+void DisplayHandler::RgbSettingsMODE() {
+  printPNG(LEDSettingsScreen, sizeof(LEDSettingsScreen), 0, 0);
 }
