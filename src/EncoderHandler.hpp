@@ -44,7 +44,7 @@ public:
     }
   }
 
-  void printPosition() {
+  void printPosition() { // legacy code
     VolPosition = encoder.getCount() / 2;
     Serial.println(VolPosition);
     if (digitalRead(encBTN) == LOW) {
@@ -52,13 +52,50 @@ public:
     }
   }
 
+  int UpdateModeSelect() {
+
+    // check if the button was pressed
+    if (digitalRead(encBTN) == LOW && !ecnBtnPressed) {
+      ecnBtnPressed = true;
+      modeSelected = modeSet;
+    } else if (digitalRead(encBTN) == HIGH && ecnBtnPressed) {
+      ecnBtnPressed = false;
+    }
+
+    // checking encoder val state
+    modeEncPosition = encoder.getCount() / 2;
+    if (modeEncPosition == 0) {
+      // do nothing
+    } else if (modeEncPosition > 0) {
+      modeSet++;
+      modeSet %= numModes;
+      encoder.clearCount();
+
+    } else if (modeEncPosition < 0) {
+      modeSet--;
+      modeSet = (modeSet < 0) ? numModes - 1 : modeSet % numModes;
+      encoder.clearCount();
+    }
+    return modeSet;
+  }
+
   u_int32_t updateColorPosition() {
     VolPosition = (encoder.getCount() / 2) % 0xFFFFFF;
     return VolPosition;
   }
 
+  int getModeSelected() { return modeSelected; }
+  int getModeSet() { return modeSet; }
+
 private:
   ESP32Encoder encoder;
+
+  // Dspl mode vareables
+  long modeEncPosition = 0;
+  int modeSet = 0;      // which mode is currently active?
+  int modeSelected = 0; // Mode selected via pushbutton. default 0 == mainScreen
+  const int numModes = 5; // how many modes are available
+
   long VolPosition = 0;
   u_int32_t colorPosition = 0;
   bool ecnBtnPressed = false;

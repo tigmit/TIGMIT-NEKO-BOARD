@@ -26,11 +26,13 @@ public:
   void init() {
     // make sure dependecies arent NULL!
     assert(pSrHandler_);
-    // Initialize row INPUT pin and set default state
 
+    // Initialize I/Os and set default state
     for (int i = 0; i < numRows; i++) {
       pinMode(rows[i], INPUT);
     }
+    pSrHandler_->init();
+
     // setup Volume read pin:
     pinMode(SliderReadPin, INPUT);
     currentVolume_ = analogRead(SliderReadPin);
@@ -73,15 +75,13 @@ public:
           Serial.println(" ");
 #endif
 
+          // caps lock.
+          if (layout1[layerIdx][rowIdx][colIdx] == KEY_CAPS_LOCK) {
+            capslockStatus = !capslockStatus;
+          }
+
           // for bongo mode
           keyPressToggle = !keyPressToggle;
-          // for DSPL toggle: // for testing only. modeSet will be controlled
-          // via the encoder in the future
-          if (rowIdx == 5 && colIdx == 10) { // this is the FN key.
-            // advance display mode.
-            modeSet++;
-            modeSet %= numModes;
-          }
 
         } else if (!digitalRead(rows[rowIdx]) &&
                    pressed[layerIdx][rowIdx][colIdx]) {
@@ -111,13 +111,14 @@ public:
     //}
   }
 
+  bool getCapslockStatus() { return capslockStatus; }
+
   bool getKeyPressToggle() const { return keyPressToggle; }
 
-  // Dspl mode vareables
-  int modeSet = 0;  // which mode is currently active?
-  int numModes = 2; // how many modes are available
 private:
   bool keyPressToggle = false;
+
+  bool capslockStatus = false;
 
   // NOTE: once i introduce Layers this is used to toggle these layers
   int layerIdx = 0;
