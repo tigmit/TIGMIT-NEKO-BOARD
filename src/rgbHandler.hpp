@@ -15,7 +15,7 @@
 
 class RgbHandler {
 public:
-  RgbHandler(EncoderHandler *pEncHandler) : pEncHandler_(pEncHandler) { ; }
+  RgbHandler() = default;
 
   void init() {
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
@@ -41,21 +41,13 @@ public:
     FastLED.show();
   }
 
-  void brightnessSlider() {
+  void brightnessSlider() { // legacy but might wanna recycle for rgb settings
     FastLED.setBrightness(analogRead(SliderReadPin) * (255.0 / 4095.0));
     FastLED.show();
   }
 
-  void randomRainbowMode() {
-    for (int i = 0; i < NUM_LEDS; i++) {
-      leds[i] = random(0xFFFFFF);
-    }
-    FastLED.show();
-    delay(100); // obviously this mode is bullshit XD
-  }
-
   void startupSequence() {
-    FastLED.setBrightness(defaultBrightnes);
+    FastLED.setBrightness(currentBrightness);
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = CRGB::Purple;
       FastLED.show();
@@ -76,20 +68,29 @@ public:
   }
 
   void pushCurrentRGBValues() {
-    currentRGBValue[0] = (u_int8_t)rVal;
-    currentRGBValue[1] = (u_int8_t)gVal;
-    currentRGBValue[2] = (u_int8_t)bVal;
+    currentRGBValue[0] = rVal;
+    currentRGBValue[1] = gVal;
+    currentRGBValue[2] = bVal;
     setConstColor(currentRGBValue);
+  }
+
+  void pushcurrentBrightness() {
+    FastLED.setBrightness(currentBrightness);
+    FastLED.show();
   }
 
   uint8_t &getRval() { return rVal; }
   uint8_t &getGval() { return gVal; }
   uint8_t &getBval() { return bVal; }
+  uint8_t &getCurrentBrightness() { return currentBrightness; }
+  uint8_t getMaxRgbBrightness() const { return maxRgbBrightness; }
 
 private:
   bool rgbOn = true;
 
   CRGB currentRGBValue = CRGB::Aqua;
+  uint8_t currentBrightness = 15;
+  const uint8_t maxRgbBrightness = 45;
 
   uint8_t rVal = currentRGBValue[0];
   uint8_t gVal = currentRGBValue[1];
@@ -97,14 +98,4 @@ private:
 
   // Define the array of leds
   CRGB leds[NUM_LEDS];
-  u_int8_t defaultBrightnes = 15;
-  EncoderHandler *pEncHandler_ = nullptr;
 };
-
-// NOTE BY ME TIGMIT
-// i tested this script using an arduino pro micro... and the library works for
-// the esp32 i will need a step up converter to get 5V VCC and also a signal
-// level converter to step up the 3.3V level signals coming from the esp
-// controller... hmmm lots of stuff but we can do it heheh i used THESE :
-// https://cdn-shop.adafruit.com/datasheets/WS2812B.pdf
-// LEDs to test.

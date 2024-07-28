@@ -23,40 +23,18 @@ public:
     pinMode(encBTN, INPUT);
   }
 
-  void updateVolume() { // perhaps legacy code
-    VolPosition = encoder.getCount() / 2;
-    if (VolPosition > 0) {
-      kbd.write(KEY_MEDIA_VOLUME_UP);
-      encoder.clearCount();
-
-    } else if (VolPosition < 0) {
-      kbd.write(KEY_MEDIA_VOLUME_DOWN);
-      encoder.clearCount();
-    }
-
-    // check if the button was pressed
-    if (digitalRead(encBTN) == LOW && !ecnBtnPressed) {
-      ecnBtnPressed = true;
-      kbd.write(KEY_MEDIA_MUTE);
-    } else {
-      if (digitalRead(encBTN) == HIGH && ecnBtnPressed) {
-        ecnBtnPressed = false;
-      }
-    }
-  }
-
   void UpdateMainStateSelect(int &modeSet) {
 
     // checking encoder val state
-    modeEncPosition = encoder.getCount() / 2;
-    if (modeEncPosition == 0) {
+    encoderPosition = encoder.getCount() / 2;
+    if (encoderPosition == 0) {
       // do nothing
-    } else if (modeEncPosition > 0) {
+    } else if (encoderPosition > 0) {
       modeSet++;
       modeSet %= numMainStates;
       encoder.clearCount();
 
-    } else if (modeEncPosition < 0) {
+    } else if (encoderPosition < 0) {
       modeSet--;
       modeSet = (modeSet < 0) ? numMainStates - 1 : modeSet % numMainStates;
       encoder.clearCount();
@@ -66,15 +44,15 @@ public:
   void UpdateRgbStateSelect(int &modeSet) {
 
     // checking encoder val state
-    modeEncPosition = encoder.getCount() / 2;
-    if (modeEncPosition == 0) {
+    encoderPosition = encoder.getCount() / 2;
+    if (encoderPosition == 0) {
       // do nothing
-    } else if (modeEncPosition > 0) {
+    } else if (encoderPosition > 0) {
       modeSet++;
       modeSet %= numRgbStates;
       encoder.clearCount();
 
-    } else if (modeEncPosition < 0) {
+    } else if (encoderPosition < 0) {
       modeSet--;
       modeSet = (modeSet < 0) ? numRgbStates - 1 : modeSet % numRgbStates;
       encoder.clearCount();
@@ -84,16 +62,16 @@ public:
   bool UpdateColorPickerSelect(uint8_t &modeSet) {
 
     // checking encoder val state
-    modeEncPosition = encoder.getCount() / 2;
-    if (modeEncPosition == 0) {
+    encoderPosition = encoder.getCount() / 2;
+    if (encoderPosition == 0) {
       // do nothing
-    } else if (modeEncPosition > 0) {
+    } else if (encoderPosition > 0) {
       modeSet += colorPickerIncrement;
       modeSet %= 255;
       encoder.clearCount();
       return true;
 
-    } else if (modeEncPosition < 0) {
+    } else if (encoderPosition < 0) {
       modeSet -= colorPickerIncrement;
       modeSet = (modeSet < 0) ? 0 : modeSet % 255;
       encoder.clearCount();
@@ -102,26 +80,57 @@ public:
     return false;
   }
 
+  bool updateRgbBrightnessSelect(uint8_t &brightness,
+                                 uint8_t maxBrightness = 0xFF) {
+    // checking encoder val state
+    encoderPosition = encoder.getCount() / 2;
+    if (encoderPosition == 0) {
+      // do nothing
+    } else if (encoderPosition > 0) {
+      brightness += brightnessIncrement;
+      brightness = (brightness >= maxBrightness) ? maxBrightness : brightness;
+      encoder.clearCount();
+      return true;
+
+    } else if (encoderPosition < 0) {
+      brightness -= brightnessIncrement;
+      brightness = (brightness <= 0) ? 0 : brightness;
+      encoder.clearCount();
+      return true;
+    }
+    return false;
+  }
+
   bool EncButtonPressed() {
     // check if the button was pressed
-    if (digitalRead(encBTN) == LOW && !ecnBtnPressed) {
-      delay(encButtonDebounce);
-      ecnBtnPressed = true;
-      return true;
-    } else if (digitalRead(encBTN) == HIGH && ecnBtnPressed) {
-      ecnBtnPressed = false;
+    int reading = digitalRead(encBTN);
+
+    if (reading != lastButtonState) {
+      lastDebounceTime = millis();
     }
+
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      if (reading != buttonState) {
+        buttonState = reading;
+        if (buttonState == LOW) {
+          return true;
+        }
+      }
+    }
+    lastButtonState = reading;
     return false;
   }
 
 private:
   ESP32Encoder encoder;
 
-  long modeEncPosition = 0;
-  int encButtonDebounce = 15; // mS
+  long encoderPosition = 0;
   uint8_t colorPickerIncrement = 5;
+  uint8_t brightnessIncrement = 1;
 
-  long VolPosition = 0;
-  u_int32_t colorPosition = 0;
-  bool ecnBtnPressed = false;
+  int buttonState;
+  int lastButtonState = HIGH;
+
+  unsigned long lastDebounceTime = 0;
+  unsigned long debounceDelay = 50;
 };

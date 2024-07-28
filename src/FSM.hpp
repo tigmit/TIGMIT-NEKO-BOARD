@@ -1,5 +1,8 @@
 /**
- * finite statemachine
+ * FSM.hpp
+ * brief   : this is the statemachine that powers all the display states
+ * created : 27.07.2024
+ * creator : @tigmit Licence : opensource
  */
 
 #pragma once
@@ -100,6 +103,9 @@ public:
     case onOff:
       onOffEnter();
       break;
+    case brignessSetting:
+      brignessSettingEnter();
+      break;
     case acceptSettings:
       // for now do nothing. in the future perhaps save settings to flash
       acceptSettingsEnter();
@@ -128,6 +134,9 @@ public:
         break;
       case onOff:
         onOffRun();
+        break;
+      case brignessSetting:
+        brignessSettingRun();
         break;
       case acceptSettings:
         acceptSettingsRun();
@@ -167,7 +176,7 @@ private:
 
   /***************************************************************************
    *                                                                         *
-   *                             STATES                                      *
+   *                             MAIN STATES                                 *
    *                                                                         *
    **************************************************************************/
   /**
@@ -178,6 +187,7 @@ private:
     Serial.println("State Transition -> State : Start");
 #endif
   }
+
   void startUpRun() {
     pDsp_->printPNG(startscreen, sizeof(startscreen), 0, 0);
     pRgbHandler_->setBrightnes(15); // full brightness = 0xFF
@@ -188,7 +198,7 @@ private:
   }
 
   /**
-   * Main Screen State
+   *******************************************************Main Screen State
    */
 
   void mainMenuEnter() {
@@ -209,12 +219,12 @@ private:
 
     // update rotary encoder select
     pEncHandler_->UpdateMainStateSelect(pDsp_->getMainItemSelect());
-    pDsp_->drawMainScreenSelectWheel(); // selection wheel
+    pDsp_->drawMainScreenSelect(); // selection wheel
 
     // update icons
     pDsp_->updateChargeIcon(90, 6);
     pDsp_->updateBLEIcon(10, 64, kbd.isConnected());
-    pDsp_->drawCapslockIcon(170, 64, pKbdHandler_->getCapslockStatus());
+    pDsp_->updateCapslockIcon(170, 64, pKbdHandler_->getCapslockStatus());
 
     if (pEncHandler_->EncButtonPressed()) {
       setMainState((MainStates)pDsp_->getMainItemSelect());
@@ -222,7 +232,7 @@ private:
   }
 
   /**
-   * Bongo Cat State
+   *******************************************************Bongo Cat State
    *  */
   void BongoCatStateEnter() {
     pDsp_->resetBongoMode();
@@ -230,6 +240,7 @@ private:
     Serial.println("State Transition -> State : BongoCat");
 #endif
   }
+
   void BongoCatStateRun() {
     pDsp_->bongoMode();
     if (pEncHandler_->EncButtonPressed()) {
@@ -237,19 +248,22 @@ private:
     }
   }
 
-  /**
-   *    RGB FSM STATES
-   */
+  /***************************************************************************
+   *                                                                         *
+   *                             RGB FSM STATES                              *
+   *                                                                         *
+   **************************************************************************/
 
   /**
-   * RGB settings State
+   *******************************************************rgbSelectScreen State
    */
   void rgbSelectScreenEnter() {
-    pDsp_->resetRgbSelectScreen();
+    pDsp_->resetRgbScreenFlags();
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : rgbSelectScreen");
 #endif
   }
+
   void rgbSelectScreenRun() {
 
     pDsp_->drawRgbScreenWallpaper();
@@ -264,18 +278,18 @@ private:
   }
 
   /**
-   * RED Color Picker State
+   *******************************************************RED Color Picker State
    */
   void colorPickerRedEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : ColorPicker RED");
 #endif
-    pDsp_->drawColorPicker(pRgbHandler_->getRval(), TFT_RED);
+    pDsp_->drawRgbConfigWheel(pRgbHandler_->getRval(), TFT_RED);
   }
 
   void colorPickerRedRun() {
     if (pEncHandler_->UpdateColorPickerSelect(pRgbHandler_->getRval())) {
-      pDsp_->drawColorPicker(pRgbHandler_->getRval(), TFT_RED);
+      pDsp_->drawRgbConfigWheel(pRgbHandler_->getRval(), TFT_RED);
       pRgbHandler_->pushCurrentRGBValues();
     }
 
@@ -285,18 +299,19 @@ private:
   }
 
   /**
-   * GREEN Color Picker State
+   *******************************************************GREEN Color Picker
+   *State
    */
   void colorPickerGreenEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : ColorPicker GREEN");
 #endif
-    pDsp_->drawColorPicker(pRgbHandler_->getGval(), TFT_GREEN);
+    pDsp_->drawRgbConfigWheel(pRgbHandler_->getGval(), TFT_GREEN);
   }
 
   void colorPickerGreenRun() {
     if (pEncHandler_->UpdateColorPickerSelect(pRgbHandler_->getGval())) {
-      pDsp_->drawColorPicker(pRgbHandler_->getGval(), TFT_GREEN);
+      pDsp_->drawRgbConfigWheel(pRgbHandler_->getGval(), TFT_GREEN);
       pRgbHandler_->pushCurrentRGBValues();
     }
 
@@ -306,18 +321,19 @@ private:
   }
 
   /**
-   * BLUE Color Picker State
+   *******************************************************BLUE Color Picker
+   *State
    */
   void colorPickerBlueEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : ColorPicker BLUE");
 #endif
-    pDsp_->drawColorPicker(pRgbHandler_->getBval(), TFT_BLUE);
+    pDsp_->drawRgbConfigWheel(pRgbHandler_->getBval(), TFT_BLUE);
   }
 
   void colorPickerBlueRun() {
     if (pEncHandler_->UpdateColorPickerSelect(pRgbHandler_->getBval())) {
-      pDsp_->drawColorPicker(pRgbHandler_->getBval(), TFT_BLUE);
+      pDsp_->drawRgbConfigWheel(pRgbHandler_->getBval(), TFT_BLUE);
       pRgbHandler_->pushCurrentRGBValues();
     }
 
@@ -327,29 +343,55 @@ private:
   }
 
   /**
-   * onOff State
+   *******************************************************onOff State
    */
   void onOffEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.print("State Transition -> State : onOff");
 #endif
+  }
 
+  void onOffRun() {
     if (pRgbHandler_->rgbIsOn()) {
       pRgbHandler_->turnRgbOff();
     } else {
       pRgbHandler_->turnRgbOn();
     }
+    setRgbState(rgbSelectScreen);
   }
-  void onOffRun() { setRgbState(rgbSelectScreen); }
 
   /**
-   * accept settings State
+   *******************************************************brignessSetting State
+   */
+  void brignessSettingEnter() {
+#ifdef FSM_PRINTS_ENABLED
+    Serial.println("State Transition -> State : brignessSetting");
+#endif
+
+    pDsp_->drawRgbConfigWheel(pRgbHandler_->getCurrentBrightness(), TFT_CYAN);
+  }
+
+  void brignessSettingRun() {
+    if (pEncHandler_->updateRgbBrightnessSelect(
+            pRgbHandler_->getCurrentBrightness(),
+            pRgbHandler_->getMaxRgbBrightness())) {
+      pDsp_->drawRgbConfigWheel(pRgbHandler_->getCurrentBrightness(), TFT_CYAN);
+      pRgbHandler_->pushcurrentBrightness();
+    }
+
+    if (pEncHandler_->EncButtonPressed()) {
+      setRgbState(rgbSelectScreen);
+    }
+  }
+
+  /**
+   *******************************************************accept settings State
    */
   void acceptSettingsEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : acceptSettings");
 #endif
-    // nothing else to do here yet
+    // nothing else to do here yet in the furture. write config to flash
   }
 
   void acceptSettingsRun() {

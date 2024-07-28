@@ -41,19 +41,13 @@ void pngDraw(PNGDRAW *pDraw);
 //-------------------------------------Display  Wrapper Class------------
 class DisplayHandler {
 public:
-  DisplayHandler(BatteryHandler *pBatHandler, KeyboardHandler *pKbdHandler,
-                 RgbHandler *pRgbHandler, EncoderHandler *encHandler)
-      : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler),
-        pRgbHandler_(pRgbHandler), pEncHandler_(encHandler) {
-    ;
-  }
+  DisplayHandler(BatteryHandler *pBatHandler, KeyboardHandler *pKbdHandler)
+      : pBatHandler_(pBatHandler), pKbdHandler_(pKbdHandler) {}
 
   void init() {
     // make sure dependecies arent NULL!
     assert(pBatHandler_);
     assert(pKbdHandler_);
-    assert(pRgbHandler_);
-    assert(pEncHandler_);
     // Initialise the TFT
     tft.begin();
     tft.fillScreen(TFT_WHITE);
@@ -73,7 +67,6 @@ public:
   }
 
   void printKeyStreak(int16_t x, int16_t y) {
-
     tft.setCursor(x, y, 2);
     tft.setTextColor(TFT_BLACK);
     tft.fillRect(x + 55, y, 50, 18, TFT_WHITE);
@@ -96,19 +89,17 @@ public:
   }
 
   // ____________________________________________DISPLAY ELEMENTS_____________
+
   void updateChargeIcon(int x = 90, int y = 6, u_int32_t BGcolor = TFT_BLACK);
+  void updateBatteryIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
+  void updateCapslockIcon(int x = 90, int y = 10, bool caps = false);
+  void updateBLEIcon(int x, int y, bool connected = false);
 
-  void drawBatteryIcon(int x = 90, int y = 10, u_int32_t BGcolor = TFT_BLACK);
-
-  void drawCapslockIcon(int x = 90, int y = 10, bool caps = false);
-
-  void drawMainScreenSelectWheel(int x = 120, int y = 120);
+  void drawMainScreenSelect(int x = 120, int y = 120);
   void drawRgbScreenSelect();
 
-  void drawColorPicker(int value, u_int32_t settingsColor = TFT_LIGHTGREY,
-                       int x = 120, int y = 120);
-
-  void updateBLEIcon(int x, int y, bool connected = false);
+  void drawRgbConfigWheel(int value, u_int32_t settingsColor = TFT_LIGHTGREY,
+                          int x = 120, int y = 120);
 
   void printPNG(const byte *image, int size, int16_t x = 0, int16_t y = 0) {
     xpos = x;
@@ -121,19 +112,13 @@ public:
     }
   }
 
-  // ---------------------------------- Main States---------------------------
+  // ---------------------------------- Main Modes---------------------------
 
   //  Bongo cat update:
   void bongoMode(); // drumm the bongo hehe
 
-  // RGB setting State
-  void RgbSettingsModeEnter();
-  void RgbSettingsModeRun();
-
-  void colorPicker();
-
-  void resetRgbSelectScreen() {
-    LedWallpaperOn = false;
+  void resetRgbScreenFlags() {
+    rgbScreenWallpaperOn = false;
     currentRgbSelect = 0;
     rgbSelect = 0;
   }
@@ -141,7 +126,7 @@ public:
   void resetDspdrawflags() {
     capsLockON = false;
     capsLockOFF = false;
-    wallpaperOn = false;
+    mainWallpaperOn = false;
     BLEwaitOn = false;
     BLEconnOn = false;
     battIconOn = false;
@@ -163,17 +148,17 @@ public:
   }
 
   void drawMainScreenWallpaper() {
-    if (!wallpaperOn) {
+    if (!mainWallpaperOn) {
       // print wallpaper
       printPNG(wallpaper240X240, sizeof(wallpaper240X240), 0, 0);
-      wallpaperOn = true;
+      mainWallpaperOn = true;
     }
   }
 
   void drawRgbScreenWallpaper() {
-    if (!LedWallpaperOn) {
+    if (!rgbScreenWallpaperOn) {
       printPNG(LEDSettingsScreen, sizeof(LEDSettingsScreen), 0, 0);
-      LedWallpaperOn = true;
+      rgbScreenWallpaperOn = true;
     }
   }
 
@@ -193,8 +178,8 @@ private:
   bool capsLockON = false;
   bool capsLockOFF = false;
 
-  bool wallpaperOn = false;
-  bool LedWallpaperOn = false;
+  bool mainWallpaperOn = false;
+  bool rgbScreenWallpaperOn = false;
 
   u_int32_t handsOfftrigger = 700000;
   u_int32_t handsOffCount = handsOfftrigger;
@@ -211,7 +196,7 @@ private:
   int currentMainSelect = 0;
   int MainScreenSelect = 0;
 
-  const uint32_t GuiAngles[5][2] = {
+  const uint32_t mainSelectWheelAngles[5][2] = {
       {144, 216}, {216, 288}, {288, 360}, {360, 72}, {72, 144}};
 
   const uint32_t LedSelectRings[6][3] = {{95, 62, 19},   {145, 86, 19},
@@ -225,8 +210,6 @@ private:
   // refferences
   BatteryHandler *pBatHandler_ = nullptr;
   KeyboardHandler *pKbdHandler_ = nullptr;
-  RgbHandler *pRgbHandler_ = nullptr;
-  EncoderHandler *pEncHandler_ = nullptr;
 };
 
 //____________________________________________________________________________________________________________________
@@ -260,7 +243,7 @@ void DisplayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
   } else if (!pBatHandler_->isCharging() && !battIconOn) {
 
     // i want to erse just the symbol. not the wole screen
-    drawBatteryIcon();
+    updateBatteryIcon();
     printSOC(x + 12, y + 25);
     battIconOn = true;
     chargeFlashOn = false;
@@ -271,7 +254,7 @@ void DisplayHandler::updateChargeIcon(int x, int y, u_int32_t BGcolor) {
   }
 }
 
-void DisplayHandler::drawBatteryIcon(int x, int y, u_int32_t BGcolor) {
+void DisplayHandler::updateBatteryIcon(int x, int y, u_int32_t BGcolor) {
   tft.fillCircle(x + 30, y + 30, 31, BGcolor);
   tft.drawCircle(x + 30, y + 30, 30, TFT_GREEN);
   tft.drawCircle(x + 30, y + 30, 25, TFT_GREEN);
@@ -302,7 +285,7 @@ void DisplayHandler::updateBLEIcon(int x, int y, bool connected) {
   tft.drawLine(x + 30, y + 10, x + 45, y + 20, BLE_COLOR);
 }
 
-void DisplayHandler::drawCapslockIcon(int x, int y, bool caps) {
+void DisplayHandler::updateCapslockIcon(int x, int y, bool caps) {
 
   if (!caps && !capsLockOFF) {
     capsLockON = false;
@@ -323,13 +306,14 @@ void DisplayHandler::drawCapslockIcon(int x, int y, bool caps) {
   tft.drawString("aA", x + 17, y + 20, 4);
 }
 
-void DisplayHandler::drawMainScreenSelectWheel(int x, int y) {
+void DisplayHandler::drawMainScreenSelect(int x, int y) {
   if (MainScreenSelect != currentMainSelect) {
     currentMainSelect = MainScreenSelect;
 
     tft.drawArc(x, y, 120, 117, 0, 360, TFT_BLACK, TFT_BLACK, true);
-    tft.drawArc(x, y, 120, 117, GuiAngles[currentMainSelect][0],
-                GuiAngles[currentMainSelect][1], TFT_GREEN, TFT_BLACK, true);
+    tft.drawArc(x, y, 120, 117, mainSelectWheelAngles[currentMainSelect][0],
+                mainSelectWheelAngles[currentMainSelect][1], TFT_GREEN,
+                TFT_BLACK, true);
   }
 }
 
@@ -350,8 +334,8 @@ void DisplayHandler::drawRgbScreenSelect() {
   }
 }
 
-void DisplayHandler::drawColorPicker(int value, u_int32_t settingsColor, int x,
-                                     int y) {
+void DisplayHandler::drawRgbConfigWheel(int value, u_int32_t settingsColor,
+                                        int x, int y) {
 
   tft.drawArc(x, y, 120, 111, 0, 360, TFT_BLACK, TFT_BLACK, true);
   tft.drawArc(x, y, 119, 112, 308, 52, settingsColor, settingsColor, true);
@@ -402,16 +386,4 @@ void DisplayHandler::bongoMode() {
     // maybe we can fix this with a timer....?
     handsOffCount++;
   }
-}
-
-/**
- * RGB settings State
- */
-void DisplayHandler::RgbSettingsModeEnter() {}
-void DisplayHandler::RgbSettingsModeRun() {
-
-  drawRgbScreenWallpaper();
-
-  // current mode should be reset to 0?
-  pEncHandler_->UpdateRgbStateSelect(getRgbItemSelect());
 }
