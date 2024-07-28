@@ -22,8 +22,8 @@ ShiftRegisterHandler srHandler;
 KeyboardHandler kbdHandler(&srHandler);
 BatteryHandler batHandler;
 EncoderHandler encHandler;
-RgbHandler rgbHandler(&encHandler);
-DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler, &encHandler);
+RgbHandler rgbHandler;
+DisplayHandler dspHandler(&batHandler, &kbdHandler);
 FSM fsm(&batHandler, &kbdHandler, &rgbHandler, &encHandler, &dspHandler);
 
 // setup Task handles
@@ -62,8 +62,8 @@ void Loop0_(void *param) {
   // setup section for loop0:
 
   //__________________RUN Loop0
-  while (true) { // TODO: implement Statemachine
-    fsm.mainFSM();
+  while (true) {
+    fsm.mainFSM(); // calling statemachine
   }
 }
 
