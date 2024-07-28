@@ -46,11 +46,6 @@ public:
     FastLED.show();
   }
 
-  void colorSettingRotary() {
-    // this doesnt work like thgat yet
-    setConstColor((CRGB)pEncHandler_->updateColorPosition());
-  }
-
   void randomRainbowMode() {
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = random(0xFFFFFF);
@@ -66,9 +61,40 @@ public:
       FastLED.show();
       delay(12);
     }
+    setConstColor(currentRGBValue);
   }
 
+  bool rgbIsOn() const { return rgbOn; }
+
+  void turnRgbOff() {
+    setConstColor(CRGB::Black);
+    rgbOn = false;
+  }
+  void turnRgbOn() {
+    setConstColor(currentRGBValue);
+    rgbOn = true;
+  }
+
+  void pushCurrentRGBValues() {
+    currentRGBValue[0] = (u_int8_t)rVal;
+    currentRGBValue[1] = (u_int8_t)gVal;
+    currentRGBValue[2] = (u_int8_t)bVal;
+    setConstColor(currentRGBValue);
+  }
+
+  uint8_t &getRval() { return rVal; }
+  uint8_t &getGval() { return gVal; }
+  uint8_t &getBval() { return bVal; }
+
 private:
+  bool rgbOn = true;
+
+  CRGB currentRGBValue = CRGB::Aqua;
+
+  uint8_t rVal = currentRGBValue[0];
+  uint8_t gVal = currentRGBValue[1];
+  uint8_t bVal = currentRGBValue[2];
+
   // Define the array of leds
   CRGB leds[NUM_LEDS];
   u_int8_t defaultBrightnes = 15;

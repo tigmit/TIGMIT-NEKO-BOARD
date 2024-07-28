@@ -12,4 +12,5 @@
 #undef DEBUG_LVL_2
 #undef DEBUG_LVL_3
 
+#define FSM_PRINTS_ENABLED
 #undef DISABLE_BLE_OUTPUT

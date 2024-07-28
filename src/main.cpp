@@ -9,6 +9,7 @@
 #include "Defines/hardwareDef.hpp"
 #include "DisplayHandler.hpp"
 #include "EncoderHandler.hpp"
+#include "FSM.hpp"
 #include "KeyboardHandler.hpp"
 #include "RgbHandler.hpp"
 #include "ShiftRegisterHandler.hpp"
@@ -23,6 +24,7 @@ BatteryHandler batHandler;
 EncoderHandler encHandler;
 RgbHandler rgbHandler(&encHandler);
 DisplayHandler dspHandler(&batHandler, &kbdHandler, &rgbHandler, &encHandler);
+FSM fsm(&batHandler, &kbdHandler, &rgbHandler, &encHandler, &dspHandler);
 
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
@@ -35,7 +37,6 @@ void setup() {
 
   // ----------init display
   dspHandler.init();
-  dspHandler.startScreen();
 
   // ----------init keyboard matrix
   Serial.println("Starting BLE work!");
@@ -59,34 +60,10 @@ void setup() {
 
 void Loop0_(void *param) {
   // setup section for loop0:
-  rgbHandler.startupSequence();
-  rgbHandler.setConstColor(CRGB::Aqua);
-  rgbHandler.setBrightnes(15); // full brightness = 0xFF
 
   //__________________RUN Loop0
   while (true) { // TODO: implement Statemachine
-    // updating the mode state
-    encHandler.UpdateModeSelect();
-
-    switch (encHandler.getModeSelected()) {
-    case 0:
-      dspHandler.mainScreen();
-      break;
-    case 1:
-      dspHandler.mainScreen();
-      break;
-    case 2:
-      dspHandler.bongoMODE();
-      break;
-    case 3:
-      dspHandler.placeHolderScreen();
-      break;
-    default:
-      dspHandler.mainScreen();
-      break;
-    }
-
-    // rgbHandler.colorSettingRotary();
+    fsm.mainFSM();
   }
 }
 

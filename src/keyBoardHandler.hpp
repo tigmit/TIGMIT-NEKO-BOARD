@@ -104,13 +104,6 @@ public:
     }
   }
 
-  void updateVolumeSlider() {
-    readVolume = analogRead(SliderReadPin);
-    // if (outOfBounds(readVolume, sliderbounds)) {
-    //  // TODO: write volume to BLE output
-    //}
-  }
-
   bool getCapslockStatus() { return capslockStatus; }
 
   bool getKeyPressToggle() const { return keyPressToggle; }
