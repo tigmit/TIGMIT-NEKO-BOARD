@@ -347,7 +347,7 @@ private:
    */
   void onOffEnter() {
 #ifdef FSM_PRINTS_ENABLED
-    Serial.print("State Transition -> State : onOff");
+    Serial.println("State Transition -> State : onOff");
 #endif
   }
 

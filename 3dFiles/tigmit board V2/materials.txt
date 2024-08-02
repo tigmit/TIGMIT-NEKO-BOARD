@@ -1,0 +1,20 @@
+bottom main case:
+SLA Resin -> imagine black
+
+display front plate:
+SLA Resin -> imagine black
+
+Display mount block:
+SLA Resin -> imagine black
+
+Lid Main case:
+SLA Resin -> imagine black
+
+MCU access lid:
+SLA Resin -> 8001 Resin transparent
+
+Keyplate:
+SLA Resin -> 8001 Resin Translucent
+
+beauty rail:
+SLA Resin -> X Resin
