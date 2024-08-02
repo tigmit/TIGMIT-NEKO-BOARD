@@ -6,9 +6,10 @@
 #pragma once
 
 #include "../lib/Defines/hardwareDef.hpp"
+#include "../lib/FsmStates.hpp"
 #include "../lib/KeyBoardHandler.hpp"
 #include "../lib/debugSettings.hpp"
-#include "FsmStates.hpp"
+
 #include <Arduino.h>
 #include <ESP32Encoder.h> // https://github.com/madhephaestus/ESP32Encoder.git
 #include <math.h>

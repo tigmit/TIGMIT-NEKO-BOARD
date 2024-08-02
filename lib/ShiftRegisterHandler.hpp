@@ -6,6 +6,7 @@
  */
 #pragma once
 #include "../lib/Defines/shiftRegisterDef.hpp"
+
 #include <Arduino.h>
 #include <SPI.h>
 

@@ -8,6 +8,7 @@
 
 #pragma once
 #include "../lib/Defines/hardwareDef.hpp"
+
 #include <BleKeyboard.h>
 
 short rows[numRows]{row0, row1, row2, row3, row4, row5};

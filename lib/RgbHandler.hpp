@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../lib/EncoderHandler.hpp"
+
 #include <FastLED.h>
 
 #define NUM_LEDS 81

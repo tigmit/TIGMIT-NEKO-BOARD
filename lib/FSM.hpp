@@ -10,13 +10,14 @@
 #include "../lib/BatteryHandler.hpp"
 #include "../lib/DisplayHandler.hpp"
 #include "../lib/EncoderHandler.hpp"
+#include "../lib/FsmStates.hpp"
 #include "../lib/KeyBoardHandler.hpp"
 #include "../lib/RgbHandler.hpp"
 #include "../lib/debugSettings.hpp"
 #include "../lib/helpers.hpp"
-#include "FsmStates.hpp"
-#include "immages/allImmages.hpp"
+#include "../lib/immages/allImmages.hpp"
 #include <Arduino.h>
+
 
 struct FSM {
 public:

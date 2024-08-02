@@ -3,9 +3,9 @@
 
 // include all the immages in here
 
-#include "LedSettingsScreen.hpp"
-#include "Wallpaper.hpp"
-#include "bongoHandsOff.hpp"
-#include "bongoLeft.h"
-#include "bongoRight.h"
-#include "startscreen.hpp"
+#include "../lib/immages/LedSettingsScreen.hpp"
+#include "../lib/immages/Wallpaper.hpp"
+#include "../lib/immages/bongoHandsOff.hpp"
+#include "../lib/immages/bongoLeft.h"
+#include "../lib/immages/bongoRight.h"
+#include "../lib/immages/startscreen.hpp"

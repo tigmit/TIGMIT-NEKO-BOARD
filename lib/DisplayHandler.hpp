@@ -16,17 +16,16 @@
 
 #pragma once
 #include "../lib/BatteryHandler.hpp"
+#include "../lib/Defines/displayDef.hpp"
 #include "../lib/EncoderHandler.hpp"
 #include "../lib/KeyBoardHandler.hpp"
 #include "../lib/RgbHandler.hpp"
 #include "../lib/debugSettings.hpp"
 #include "../lib/helpers.hpp"
-#include "../lib/Defines/displayDef.hpp"
+#include "../lib/immages/allImmages.hpp"
+
 #include <PNGdec.h>
-
-#include "immages/allImmages.hpp"
-
-#include "SPI.h"
+#include <SPI.h>
 #include <TFT_eSPI.h> // Hardware-specific library
 
 #define MAX_IMAGE_WIDTH 240 // Adjust for your images

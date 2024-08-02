@@ -11,6 +11,7 @@
 #include "../lib/debugSettings.hpp"
 #include "../lib/helpers.hpp"
 #include "../lib/layout.hpp"
+
 #include <BleKeyboard.h>
 
 BleKeyboard kbd("tigmit_Board", "tigmit", 100);
