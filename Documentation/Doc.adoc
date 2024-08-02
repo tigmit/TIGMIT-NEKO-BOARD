@@ -1,4 +1,59 @@
 
+# TIGMIT NEKO BOARD 
+
+This is a one man project trying to create (my) ultimate keyboard. taylored to the personal needs of a software developer with a thing for cute and weeby shit... hence the name :P 
+
+
+image::../PNGs/tigmit Neco board.png[]
+
+the board features 
+
+- 79 keys in a kind of.. compact TKL arrangement.
+- a 240 x 240 round Display
+- rotary encoder
+- analog slider
+- fully controllable RGB for each key
+- hot swappable 
+- the key-plate rests on foam pads to ensure a smoooth typing experience
+
+
+it's a wireless board using bluetooth to connect to your devices :3
+
+### The brain of the operation
+
+is a esp32 vroom devkit. for now at least. perhaps i will change the controller at some point or integrate it onto the PCB.
+
+anyways it can be accessed for programming via a lid in the bottom of the case as seen here:
+
+image::../PNGs/tigmit Neco board back view.png[]
+image::../PNGs/tigmit Neco board bottom view.png[]
+
+it has a fixed angle between 4 and 5 degrees but supprts feet to change the angle to any requred needs really :3
+
+to power the thing it uses a 8000mAh lipo battery with a breakout pcb that handles all of the power tasks like lipo protection and stepping up the battery voltage to 5V for the RGB LEDs
+
+speaking of LEDs. the board has 79 adressable RGB LEDs. more specific SK6812MINI-E (datasheet in Documents/miscFiles Folder)
+
+## KEY Matrix
+
+the keys are arranged as a 6 x 15 Keymatrix. but wait. that uses a total of 21 I/O PINS?! how can we still controll a Display, a slider, and a Rotary encoder with pins to spare?????? well simple hehe the board has TWO 8 bit shift registers wich are controlled via SPI for maximum speeeed. gotta go fast kid.
+
+image::../PNGs/shift registers.png[]
+
+this way its possible to save a massive ammount of pins. reducing the total ammount needed from 21 to basicllay just 8 pins for the whole keymatrix :P 
+
+NOTE: its still very possible to reach a nice 1kHz polling rate for each key so there is no noticable lag when typing because we are utalizing SPI to controll the Shift registers :3
+
+BUT! another trick is needed to pull all of this off with just one ESP32...
+
+### Multicore processing
+
+the esp32 features a delicios dual core MCU which we can use to our advantage hehe
+
+Core 0 runs ONLY the key matrix polling and has priority over all the other tasks. to make absolutely sure that the keyboard... well... TYPES!
+
+Core 1 handles all the other tasks like refreshing the display and running the Display Statemachine with alongside RGB tasks and sooo on. at the expense of a slightly slower refresh rate of the display. but its still fast enough for a nice experience :3 and the display has a buffer itself which eliminates the need to refresh it constantly all together ;P so we only need to update it in when we have to
+
 # USING GC9A01 round TFT Display:
 
 ## setup:
@@ -7,13 +62,13 @@
 
 to use the GC9A01 Display, i am using the TFT_eSPI Lib by Bodmer'
 https://github.com/Bodmer/TFT_eSPI
-it is included locally in this project because it requires some work to set it up for our particular Display.
+it requires some work to set it up for our particular Display.
 
 to use the Display we need to change some Settings in lib\TFT_eSPI\User_Setup.h
 
 Following changes need to be made:
 
- - select the right Driver. In Line 69 (LOL ROFL (/*_*)/ ) use #define GC9A01_DRIVER
+ - select the right Driver. In Line 69 LOL ROFL (/* _ *)/  use #define GC9A01_DRIVER
 
  - set the requred Pin defines for the Display:
 
@@ -74,3 +129,6 @@ Following changes need to be made:
 ----
 
 connect these pins as per the defines and you should be good to go.
+
+
+

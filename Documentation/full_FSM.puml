@@ -1,0 +1,31 @@
+@startuml
+
+
+[*] --> startUp
+startUp --> mainMenu
+
+mainMenu --> bongoCat
+bongoCat --> mainMenu
+
+mainMenu --> rgbSelectScreen
+rgbSelectScreen --> mainMenu
+
+state colorPickerRED #pink;line:red;line.bold;text:red
+rgbSelectScreen --> colorPickerRED
+state colorPickerGREEN #GreenYellow;line:Green;line.bold;text:Green
+rgbSelectScreen --> colorPickerGREEN
+state colorPickerBLUE #LightBlue;line:Blue;line.bold;text:Blue
+rgbSelectScreen --> colorPickerBLUE
+rgbSelectScreen --> onOff
+rgbSelectScreen --> brignessSetting
+rgbSelectScreen --> acceptSettings
+
+colorPickerRED   --> rgbSelectScreen   
+colorPickerGREEN --> rgbSelectScreen   
+colorPickerBLUE  --> rgbSelectScreen   
+onOff            --> rgbSelectScreen   
+brignessSetting  --> rgbSelectScreen   
+acceptSettings   --> mainMenu 
+
+
+@enduml
