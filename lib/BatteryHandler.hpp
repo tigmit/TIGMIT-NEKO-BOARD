@@ -1,14 +1,14 @@
 /**
- * BatteryHandler.hpp
+ * ../lib/BatteryHandler.hpp
  * brief   : this class handles all the tasks required to handle the battery
  * created : 25.05.2024
  * creator : @tigmit Licence : opensource
  */
 #pragma once
 
-#include "Defines/hardwareDef.hpp"
-#include "debugSettings.hpp"
-#include "KeyboardHandler.hpp"
+#include "../lib/Defines/hardwareDef.hpp"
+#include "../lib/KeyBoardHandler.hpp"
+#include "../lib/debugSettings.hpp"
 #include <Arduino.h>
 #include <math.h>
 

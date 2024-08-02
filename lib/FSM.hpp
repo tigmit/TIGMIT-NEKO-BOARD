@@ -1,5 +1,5 @@
 /**
- * FSM.hpp
+ * ../lib/FSM.hpp
  * brief   : this is the statemachine that powers all the display states
  * created : 27.07.2024
  * creator : @tigmit Licence : opensource
@@ -7,14 +7,14 @@
 
 #pragma once
 
-#include "BatteryHandler.hpp"
-#include "EncoderHandler.hpp"
+#include "../lib/BatteryHandler.hpp"
+#include "../lib/DisplayHandler.hpp"
+#include "../lib/EncoderHandler.hpp"
+#include "../lib/KeyBoardHandler.hpp"
+#include "../lib/RgbHandler.hpp"
+#include "../lib/debugSettings.hpp"
+#include "../lib/helpers.hpp"
 #include "FsmStates.hpp"
-#include "KeyboardHandler.hpp"
-#include "RgbHandler.hpp"
-#include "debugSettings.hpp"
-#include "displayHandler.hpp"
-#include "helpers.hpp"
 #include "immages/allImmages.hpp"
 #include <Arduino.h>
 

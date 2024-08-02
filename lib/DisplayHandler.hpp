@@ -1,5 +1,5 @@
 /**
- * DisplayHandler.hpp
+ * ../lib/DisplayHandler.hpp
  * brief   : this class handles all the tasks of the DisplayHandler.
  * created : 26.05.2024
  * creator : @tigmit Licence : opensource
@@ -15,13 +15,13 @@
 //   5. use the array in your display designs
 
 #pragma once
-#include "BatteryHandler.hpp"
-#include "Defines\displayDef.hpp"
-#include "EncoderHandler.hpp"
-#include "KeyboardHandler.hpp"
-#include "RgbHandler.hpp"
-#include "debugSettings.hpp"
-#include "helpers.hpp"
+#include "../lib/BatteryHandler.hpp"
+#include "../lib/EncoderHandler.hpp"
+#include "../lib/KeyBoardHandler.hpp"
+#include "../lib/RgbHandler.hpp"
+#include "../lib/debugSettings.hpp"
+#include "../lib/helpers.hpp"
+#include "../lib/Defines/displayDef.hpp"
 #include <PNGdec.h>
 
 #include "immages/allImmages.hpp"

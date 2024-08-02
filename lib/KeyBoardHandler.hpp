@@ -1,16 +1,16 @@
 /**
- * KeyboardHandler.hpp
+ * ../lib/KeyBoardHandler.hpp
  * brief   : this class handles all the tasks of the keymatrix such as scanning
  *           inputs and initializing the array
  * created : 25.05.2024
  * creator : @tigmit Licence : opensource
  */
 #pragma once
-#include "Defines\hardwareDef.hpp"
-#include "ShiftRegisterHandler.hpp"
-#include "debugSettings.hpp"
-#include "helpers.hpp"
-#include "layout.hpp"
+#include "../lib/Defines/hardwareDef.hpp"
+#include "../lib/ShiftRegisterHandler.hpp"
+#include "../lib/debugSettings.hpp"
+#include "../lib/helpers.hpp"
+#include "../lib/layout.hpp"
 #include <BleKeyboard.h>
 
 BleKeyboard kbd("tigmit_Board", "tigmit", 100);

@@ -1,11 +1,11 @@
 /**
- * ShiftRegisterHandler.hpp
+ * ../lib/ShiftRegisterHandler.hpp
  * brief   : handles shift register tasks
  * created : 29.05.2024
  * creator : @tigmit Licence : opensource
  */
 #pragma once
-#include "Defines\shiftRegisterDef.hpp"
+#include "../lib/Defines/shiftRegisterDef.hpp"
 #include <Arduino.h>
 #include <SPI.h>
 

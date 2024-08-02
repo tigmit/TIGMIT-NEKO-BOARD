@@ -1,14 +1,14 @@
 /**
- * EncoderHandler.hpp
+ * ../lib/EncoderHandler.hpp
  * brief   : this class handles all the tasks required to read the rotary
  * encoder created : 25.05.2024 creator : @tigmit Licence : opensource
  */
 #pragma once
 
-#include "Defines/hardwareDef.hpp"
+#include "../lib/Defines/hardwareDef.hpp"
+#include "../lib/KeyBoardHandler.hpp"
+#include "../lib/debugSettings.hpp"
 #include "FsmStates.hpp"
-#include "KeyboardHandler.hpp"
-#include "debugSettings.hpp"
 #include <Arduino.h>
 #include <ESP32Encoder.h> // https://github.com/madhephaestus/ESP32Encoder.git
 #include <math.h>

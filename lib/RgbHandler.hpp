@@ -1,5 +1,5 @@
 /**
- * RgbHandler.hpp
+ * ../lib/RgbHandler.hpp
  * brief   : this class handles all the tasks to controll the pixel LEDs.
  * created : 13.06.2024
  * creator : @tigmit Licence : opensource
@@ -7,7 +7,7 @@
 
 #pragma once
 
-#include "EncoderHandler.hpp"
+#include "../lib/EncoderHandler.hpp"
 #include <FastLED.h>
 
 #define NUM_LEDS 81
