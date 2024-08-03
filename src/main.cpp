@@ -5,16 +5,16 @@
  * creator : @tigmit Licence : opensource
  */
 
-#include "../lib/BatteryHandler.hpp"
-#include "../lib/Defines/hardwareDef.hpp"
-#include "../lib/DisplayHandler.hpp"
-#include "../lib/EncoderHandler.hpp"
-#include "../lib/FSM.hpp"
-#include "../lib/KeyBoardHandler.hpp"
-#include "../lib/RgbHandler.hpp"
-#include "../lib/ShiftRegisterHandler.hpp"
-#include "../lib/debugSettings.hpp"
-#include "../lib/layout.hpp"
+#include "BatteryHandler.hpp"
+#include "Defines/hardwareDef.hpp"
+#include "DisplayHandler.hpp"
+#include "EncoderHandler.hpp"
+#include "FSM.hpp"
+#include "KeyBoardHandler.hpp"
+#include "RgbHandler.hpp"
+#include "ShiftRegisterHandler.hpp"
+#include "debugSettings.hpp"
+#include "layout.hpp"
 
 #include <Arduino.h>
 
