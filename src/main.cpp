@@ -10,7 +10,7 @@
 #include "DisplayHandler.hpp"
 #include "EncoderHandler.hpp"
 #include "FSM.hpp"
-#include "KeyboardHandler.hpp"
+#include "KeyBoardHandler.hpp"
 #include "RgbHandler.hpp"
 #include "ShiftRegisterHandler.hpp"
 #include "debugSettings.hpp"
