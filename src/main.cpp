@@ -15,6 +15,7 @@
 #include "ShiftRegisterHandler.hpp"
 #include "debugSettings.hpp"
 #include "layout.hpp"
+#include "shell.hpp"
 
 #include <Arduino.h>
 
@@ -34,6 +35,9 @@ void Loop0_(void *param);
 
 void setup() {
   Serial.begin(115200);
+#ifdef SHELL_ART
+  shellart();
+#endif
 
   // ----------init display
   dspHandler.init();
