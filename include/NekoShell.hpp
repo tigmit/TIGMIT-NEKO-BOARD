@@ -2,6 +2,8 @@
 
 #include "Defines/hardwareDef.hpp"
 #include "ESP32Console.h"
+#include "Model.hpp"
+#include "helpers.hpp"
 #include <Arduino.h>
 #include <stdio.h>
 
@@ -12,11 +14,19 @@ public:
   void init() {
 
     console.setPrompt("meow > ");
-
     console.begin(BAUD_RATE);
 
     console.registerSystemCommands(); // Register builtin commands
+    registerNekoCommands();           // register custom commands
 
+    delay(100); // give shell time to start before wrinting welcome promt
+    welcome();
+  }
+
+private:
+  Console console;
+
+  void registerNekoCommands() {
     /***************************************************************************
      *                                                                         *
      *                          REGISTER COMMANDS                              *
@@ -26,35 +36,62 @@ public:
     console.registerCommand(
         ConsoleCommand("hello", &helloWorld, "just a hello world"));
 
-    /***************************************************************************/
+    console.registerCommand(
+        ConsoleCommand("setRGB", &setRGB, "set a new RGB LED color"));
 
-    // When console is in use, we can not use Serial.print but you can use
-    // printf to output text
-    delay(100); // give shell time to start before wprinting welcome promt
-    welcome();
+    /***************************************************************************/
   }
 
-private:
-  Console console;
+  /***************************************************************************
+   *                                                                         *
+   *                          IMPLEMENT COMMANDS                             *
+   *                                                                         *
+   ***************************************************************************/
 
-  static int helloWorld(int argc, char **argv) {
+  static int helloWorld(int argc, char **argv) { // this is an example Command.
     // Ensure that we have an argument to parse
     if (argc != 2) {
       printf("give me an argument pleas\n");
       // Return EXIT_FAILURE if something did not work.
       return EXIT_FAILURE;
     }
-
     // Take the first argument...
     auto arg = String(argv[1]);
-
-    // and use it to decide what to do with the LED
     printf("you gave me : %s\n", arg);
-    printf("but i am just a cat hehe \n");
-
+    if (arg == "treat") {
+      printf("NOM NOM NOM NOM! \n");
+    } else {
+      printf("but i am just a cat hehe \n");
+    }
     // Return EXIT_SUCCESS if everything worked as intended.
     return EXIT_SUCCESS;
   }
+
+  static int setRGB(int argc, char **argv) {
+    // Ensure that we have an argument to parse
+    if (argc != 4) {
+      printf("need values for R, G, B\n");
+      return EXIT_FAILURE;
+    } else {
+      // check max value
+      for (int i = 1; i < 4; i++) {
+        if (chartoint(argv[i]) > 255) {
+          printf("val must be between 0 - 255\n");
+          return EXIT_FAILURE;
+        }
+      }
+    }
+    // set to RGB handler
+    rgbHandler.getRval() = chartoint(argv[1]);
+    rgbHandler.getGval() = chartoint(argv[2]);
+    rgbHandler.getBval() = chartoint(argv[3]);
+    rgbHandler.pushCurrentRGBValues();
+    printf("success. R: %d | G: %d | B: %d\n", rgbHandler.getRval(),
+           rgbHandler.getGval(), rgbHandler.getBval());
+    return EXIT_SUCCESS;
+  }
+
+  /***************************************************************************/
 
   void welcome() {
     Serial.println("");

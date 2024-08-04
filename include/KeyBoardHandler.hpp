@@ -41,6 +41,10 @@ public:
     // setup BLE connection indicator LED
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
+
+    // start ble keyboard task
+    Serial.println("Starting BLE work!");
+    kbd.begin();
   }
 
   /**

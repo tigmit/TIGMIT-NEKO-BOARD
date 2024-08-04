@@ -14,7 +14,7 @@
 #undef NEKO_SHELL
 #undef FSM_PRINTS_ENABLED
 
-#undef DEVMODE
+#define DEVMODE
 
 #ifdef DEVMODE
 #define NEKO_SHELL
