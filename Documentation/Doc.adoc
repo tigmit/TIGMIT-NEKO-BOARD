@@ -19,7 +19,7 @@ the board features
 
 it's a wireless board using bluetooth to connect to your devices :3
 
-### The brain of the operation
+## The brain of the operation
 
 is a esp32 vroom devkit. for now at least. perhaps i will change the controller at some point or integrate it onto the PCB.
 
@@ -63,10 +63,9 @@ Core 1 handles all the other tasks like refreshing the display and running the D
 to use the GC9A01 Display, i am using the TFT_eSPI Lib by Bodmer'
 https://github.com/Bodmer/TFT_eSPI
 it requires some work to set it up for our particular Display.
+thats why the TFT_eSPI was moved to the local libs folder in order to make it easyer to clone the repo.
 
-to use the Display we need to change some Settings in lib\TFT_eSPI\User_Setup.h
-
-Following changes need to be made:
+if it does get lost then following changes need to be made in lib\TFT_eSPI\User_Setup.h:
 
  - select the right Driver. In Line 69 LOL ROFL (/* _ *)/  use #define GC9A01_DRIVER
 
@@ -129,6 +128,19 @@ Following changes need to be made:
 ----
 
 connect these pins as per the defines and you should be good to go.
+
+# NEKO SHELL
+
+The project features a fully functional live console/Shell to debug and play around.
+
+find more info on how to create your own commands inside ```NekoShell.hpp```
+
+To enable the NEKO SHELL go to debugSettings.hpp and enable ```#define DEVMODE```
+
+image::../PNGs/Neko_Shell.png[]
+
+
+
 
 
 
