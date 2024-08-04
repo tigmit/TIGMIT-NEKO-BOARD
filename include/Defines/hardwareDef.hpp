@@ -6,37 +6,42 @@
  * Licence : opensource
  */
 #pragma once
+#include <Arduino.h>
+
+// baud rate
+static constexpr unsigned long BAUD_RATE{115200};
 
 // Define on and off values
-#define OFF 0
-#define ON 1
+static constexpr uint8_t OFF{0};
+static constexpr uint8_t ON{1};
 
 // Pin Definitions
-#define row0 34 // TODO: gotta set these accoarding to schematics
-#define row1 35
-#define row2 32
-#define row3 33
-#define row4 25
-#define row5 26
+static constexpr int row0{34}; // TODO: gotta set these accoarding to schematics
+static constexpr int row1{35};
+static constexpr int row2{32};
+static constexpr int row3{33};
+static constexpr int row4{25};
+static constexpr int row5{26};
 
 // volume Slider
-#define SliderReadPin 12 // TODO: gotta set this accoarding to schematics
+static constexpr int SliderReadPin{
+    12}; // TODO: gotta set this accoarding to schematics
 
 // battery is charging indicator
-#define BatterySense 14
+static constexpr int BatterySense{14};
 
 // reading the battery voltage through 33k / 100k voltage devider
-#define BatteryVoltage 27
+static constexpr int BatteryVoltage{27};
 
 // Matrix setup
-#define numRows 6
-#define numCols 15
-#define numLayers 1
+static constexpr int numRows{6};
+static constexpr int numCols{15};
+static constexpr int numLayers{1};
 
 // i2C adress for display ESP32
-#define SlaveEspAdress 9
+static constexpr int SlaveEspAdress{9};
 
 // pins for rotary Encoder
-#define encCLK 17 // CLK ENCODER
-#define encDT 16  // DT ENCODER
-#define encBTN 39 // encoder button
+static constexpr int encCLK{17}; // CLK ENCODER
+static constexpr int encDT{16};  // DT ENCODER
+static constexpr int encBTN{39}; // encoder button

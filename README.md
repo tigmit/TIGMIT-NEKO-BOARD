@@ -18,6 +18,9 @@ the project features
 - hot swappable switches
 - fully custom Firmware (feel free to reuse for your project)
 - wireless operation via Bluetooth
+- a fully functioal shell with ato completion
 
+to enable the NEKO SHELL go to debugSettings.hpp and enable ```#define DEVMODE ```
+![TIGMIT NEKO BOARD](PNGs/Neko_Shell.png)
 
 

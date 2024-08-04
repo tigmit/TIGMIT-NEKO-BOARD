@@ -15,7 +15,10 @@
 #include "ShiftRegisterHandler.hpp"
 #include "debugSettings.hpp"
 #include "layout.hpp"
-#include "shell.hpp"
+
+#ifdef NEKO_SHELL
+#include "NekoShell.hpp"
+#endif
 
 #include <Arduino.h>
 
@@ -27,6 +30,10 @@ RgbHandler rgbHandler;
 DisplayHandler dspHandler(&batHandler, &kbdHandler);
 FSM fsm(&batHandler, &kbdHandler, &rgbHandler, &encHandler, &dspHandler);
 
+#ifdef NEKO_SHELL
+NekoShell nekoShell;
+#endif
+
 // setup Task handles
 TaskHandle_t Loop0; // loop running on core 0
 TaskHandle_t Loop1; // loop running on core 1 (default core)
@@ -34,10 +41,7 @@ void Loop1_(void *param);
 void Loop0_(void *param);
 
 void setup() {
-  Serial.begin(115200);
-#ifdef SHELL_ART
-  shellart();
-#endif
+  Serial.begin(BAUD_RATE);
 
   // ----------init display
   dspHandler.init();
@@ -55,6 +59,10 @@ void setup() {
 
   // ----------init Rotary Encoder
   encHandler.init();
+
+#ifdef NEKO_SHELL
+  nekoShell.init();
+#endif
 
   // creating loop on core 1 (default core)
   xTaskCreatePinnedToCore(Loop0_, "Loop0", 10000, NULL, 0, &Loop0, 0);
