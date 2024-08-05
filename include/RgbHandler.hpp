@@ -63,9 +63,9 @@ public:
       if (EEPROM.read(i) != (uint8_t)0xFF) {
         return true;
       }
-      return false;
     }
     EEPROM.end(); // end read
+    return false;
   }
 
   void clearEEPROM() {
