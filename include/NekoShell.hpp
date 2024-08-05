@@ -39,6 +39,14 @@ private:
     console.registerCommand(
         ConsoleCommand("setRGB", &setRGB, "set a new RGB LED color"));
 
+    console.registerCommand(
+        ConsoleCommand("clearPersistentMem", &clearPersistentMem,
+                       "erase current RGB config stored in EEPROM"));
+
+    console.registerCommand(ConsoleCommand("printConfigInEEPROM",
+                                           &printConfigInEEPROM,
+                                           "show hex values stored in EEPROM"));
+
     /***************************************************************************/
   }
 
@@ -88,6 +96,20 @@ private:
     rgbHandler.pushCurrentRGBValues();
     printf("success. R: %d | G: %d | B: %d\n", rgbHandler.getRval(),
            rgbHandler.getGval(), rgbHandler.getBval());
+    return EXIT_SUCCESS;
+  }
+
+  static int clearPersistentMem(int argc, char **argv) {
+    printf("clear EEPROM\n");
+    rgbHandler.getCurrentConfig().clearEEPROM();
+    printf("done... wow. such empty\n");
+    // Return EXIT_SUCCESS if everything worked as intended.
+    return EXIT_SUCCESS;
+  }
+
+  static int printConfigInEEPROM(int argc, char **argv) {
+    rgbHandler.getCurrentConfig().printConfigBytesInEEPROM();
+    // Return EXIT_SUCCESS if everything worked as intended.
     return EXIT_SUCCESS;
   }
 

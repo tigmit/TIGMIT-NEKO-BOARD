@@ -16,8 +16,8 @@
 // dual core param
 TaskHandle_t Loop0;       // loop running on core 0
 TaskHandle_t Loop1;       // loop running on core 1 (default core)
-void Loop1_(void *param); // forward declaration Loop1
 void Loop0_(void *param); // forward declaration Loop0
+void Loop1_(void *param); // forward declaration Loop1
 
 FSM fsm(&batHandler, &kbdHandler, &rgbHandler, &encHandler, &dspHandler);
 

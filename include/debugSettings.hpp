@@ -11,10 +11,11 @@
 #undef DEBUG_LVL_1
 #undef DEBUG_LVL_2
 #undef DEBUG_LVL_3
-#undef NEKO_SHELL
 #undef FSM_PRINTS_ENABLED
+#undef EEPROM_LOG
+#undef NEKO_SHELL
 
-#define DEVMODE
+#undef DEVMODE
 
 #ifdef DEVMODE
 #define NEKO_SHELL

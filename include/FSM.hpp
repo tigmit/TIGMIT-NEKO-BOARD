@@ -390,6 +390,8 @@ private:
   void acceptSettingsEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : acceptSettings");
+    Serial.println("save new config to EEPROM");
+    pRgbHandler_->getCurrentConfig().storeConfigToEEPROM();
 #endif
     // nothing else to do here yet in the furture. write config to flash
   }
