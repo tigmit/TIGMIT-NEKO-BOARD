@@ -11,8 +11,9 @@
 #undef DEBUG_LVL_1
 #undef DEBUG_LVL_2
 #undef DEBUG_LVL_3
-#undef NEKO_SHELL
 #undef FSM_PRINTS_ENABLED
+#undef EEPROM_LOG
+#undef NEKO_SHELL
 
 #undef DEVMODE
 
@@ -20,5 +21,6 @@
 #define NEKO_SHELL
 #define FSM_PRINTS_ENABLED
 #define DISABLE_BLE_OUTPUT
+#define EEPROM_LOG
 #define DEBUG_LVL_1
 #endif

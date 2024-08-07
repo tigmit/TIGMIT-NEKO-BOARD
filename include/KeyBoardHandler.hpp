@@ -14,7 +14,7 @@
 
 #include <BleKeyboard.h>
 
-BleKeyboard kbd("tigmit_Board", "tigmit", 100);
+BleKeyboard kbd{"tigmit_Board", "tigmit", 100};
 class KeyboardHandler {
 public:
   KeyboardHandler(ShiftRegisterHandler *srh) : pSrHandler_(srh){};
@@ -41,6 +41,10 @@ public:
     // setup BLE connection indicator LED
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
+
+    // start ble keyboard task
+    Serial.println("Starting BLE work!");
+    kbd.begin();
   }
 
   /**
@@ -108,6 +112,10 @@ public:
   bool getCapslockStatus() { return capslockStatus; }
 
   bool getKeyPressToggle() const { return keyPressToggle; }
+
+  void setNekoBatteryLevel(uint8_t soc) { kbd.setBatteryLevel(soc); }
+
+  bool getConnectStatus() { return kbd.isConnected(); }
 
 private:
   bool keyPressToggle = false;
