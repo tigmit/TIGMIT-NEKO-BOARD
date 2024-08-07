@@ -33,37 +33,43 @@ public:
 
   void storeConfigToEEPROM() {
     EEPROM.begin(EEPROMSize); // begin transfer
+#ifdef EEPROM_LOG
+    Serial.println("transfer current config to EEPROM");
+    printConfigBytesInEEPROM(false);
+#endif
     EEPROM.put(configEEPROMAdress, rgbConfig_);
     EEPROM.commit();
+#ifdef EEPROM_LOG
+    Serial.println("confirm new Config : ");
+    printConfigBytesInEEPROM(false);
+#endif
     EEPROM.end(); // end transfer
   }
 
-  void readConfigfromEEPROM() {
-    EEPROM.begin(EEPROMSize);                   // begin read
+  void transferConfigfromEEPROM() {
+    EEPROM.begin(EEPROMSize);
     EEPROM.get(configEEPROMAdress, rgbConfig_); // data passed by refference
-    EEPROM.end();                               // end read
-  }
-
-  void printConfigBytesInEEPROM() {
-    EEPROM.begin(EEPROMSize); // begin read
-    Serial.print("EEPROM content starting at Adress :");
-    Serial.println(configEEPROMAdress);
-    for (int i = configEEPROMAdress; i < configEEPROMAdress + EEPROMSize; i++) {
-      Serial.print(EEPROM.read(i), HEX);
-      Serial.print(" ");
-    }
-    Serial.println(" ");
+#ifdef EEPROM_LOG
+    Serial.println("transfered Config form flash to current config in stack");
+    printConfigBytesInEEPROM(false); // begin read
+#endif
     EEPROM.end(); // end read
   }
 
   bool isOccupied() {
     EEPROM.begin(EEPROMSize); // begin read
-    Serial.println(configEEPROMAdress);
     for (int i = configEEPROMAdress; i < configEEPROMAdress + EEPROMSize; i++) {
       if (EEPROM.read(i) != (uint8_t)0xFF) {
+        EEPROM.end();
+#ifdef EEPROM_LOG
+        Serial.println("FOUND config in EEPROM");
+#endif
         return true;
       }
     }
+#ifdef EEPROM_LOG
+    Serial.println("EEPROM is empty");
+#endif
     EEPROM.end(); // end read
     return false;
   }
@@ -72,11 +78,34 @@ public:
     EEPROM.begin(EEPROMSize); // begin read
     for (int i = configEEPROMAdress; i < configEEPROMAdress + EEPROMSize; i++) {
       EEPROM.write(i, (uint8_t)0xFF);
+#ifdef EEPROM_LOG
       Serial.print("BYTE at ");
       Serial.print(i);
       Serial.println("set to 0xFF");
+#endif
     }
+#ifdef EEPROM_LOG
+    Serial.println("confirm cleared");
+    printConfigBytesInEEPROM(false);
+#endif
     EEPROM.end(); // end read
+  }
+
+  void printConfigBytesInEEPROM(bool newSession = true) {
+    if (newSession) {
+      EEPROM.begin(EEPROMSize); // begin read
+    }
+    Serial.print("  printing EEPROM content starting at Adress : ");
+    Serial.println(configEEPROMAdress);
+    Serial.print("  ");
+    for (int i = configEEPROMAdress; i < configEEPROMAdress + EEPROMSize; i++) {
+      Serial.print(EEPROM.read(i), HEX);
+      Serial.print(" ");
+    }
+    Serial.println(" ");
+    if (newSession) {
+      EEPROM.end(); // end read
+    }
   }
 
 private:
@@ -101,18 +130,15 @@ public:
   RgbHandler() = default;
 
   void init() {
-    currentConfig.printConfigBytesInEEPROM();
     if (currentConfig.isOccupied()) {
       // EEPROM contains a config. load it
-      Serial.println("EEPROM contains a config. load it");
-      currentConfig.readConfigfromEEPROM();
+      currentConfig.transferConfigfromEEPROM();
     } else {
-      Serial.println("EEPROM empty! store default config");
       currentConfig.storeConfigToEEPROM(); // store the default config
     }
 
     FastLED.addLeds<NEOPIXEL, DATA_PIN>(leds, NUM_LEDS);
-    FastLED.setBrightness(0xFF);
+    FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
     // use this to limit the current draw from the lipo
     FastLED.setMaxPowerInVoltsAndMilliamps(5, 800);
 
@@ -144,9 +170,13 @@ public:
     for (int i = 0; i < NUM_LEDS; i++) {
       leds[i] = CRGB::Purple;
       FastLED.show();
-      delay(12);
+      delay(12); // boot animation time between leds
     }
-    setConstColor(currentConfig.rgbConfig_.currentRGBValue);
+    if (currentConfig.rgbConfig_.rgbOn) {
+      setConstColor(currentConfig.rgbConfig_.currentRGBValue);
+    } else {
+      turnRgbOff();
+    }
   }
 
   bool rgbIsOn() const { return currentConfig.rgbConfig_.rgbOn; }
@@ -165,11 +195,13 @@ public:
     currentConfig.rgbConfig_.currentRGBValue[1] = currentConfig.rgbConfig_.gVal;
     currentConfig.rgbConfig_.currentRGBValue[2] = currentConfig.rgbConfig_.bVal;
     setConstColor(currentConfig.rgbConfig_.currentRGBValue);
+    currentConfig.rgbConfig_.rgbOn = true;
   }
 
   void pushcurrentBrightness() {
     FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
     FastLED.show();
+    currentConfig.rgbConfig_.rgbOn = true;
   }
 
   uint8_t &getRval() { return currentConfig.rgbConfig_.rVal; }
@@ -182,7 +214,8 @@ public:
   Config &getCurrentConfig() { return currentConfig; }
 
 private:
-  const uint8_t maxRgbBrightness = 40;
+  // Max brightness for white Whithout display flickler
+  const uint8_t maxRgbBrightness = 0x1E;
 
   // Define the array of leds
   CRGB leds[NUM_LEDS];

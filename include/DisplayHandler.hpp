@@ -100,6 +100,8 @@ public:
   void drawRgbConfigWheel(int value, u_int32_t settingsColor = TFT_LIGHTGREY,
                           int x = 120, int y = 120);
 
+  void drawRgbAcceptPrompt();
+
   void printPNG(const byte *image, int size, int16_t x = 0, int16_t y = 0) {
     xpos = x;
     ypos = y;
@@ -146,6 +148,11 @@ public:
     bongoRestOn = false;
   }
 
+  void resetRgbAcceptSelect() {
+    rgbAcceptSelect = 0;
+    CurrentRgbAcceptSelect = 1;
+  }
+
   void drawMainScreenWallpaper() {
     if (!mainWallpaperOn) {
       // print wallpaper
@@ -163,6 +170,7 @@ public:
 
   int &getMainItemSelect() { return MainScreenSelect; }
   int &getRgbItemSelect() { return rgbSelect; }
+  int &getRgbAcceptSelect() { return rgbAcceptSelect; }
 
 private:
   // immage draw states
@@ -194,6 +202,9 @@ private:
 
   int currentMainSelect = 0;
   int MainScreenSelect = 0;
+
+  int rgbAcceptSelect = 0;
+  int CurrentRgbAcceptSelect = 1;
 
   const uint32_t mainSelectWheelAngles[5][2] = {
       {144, 216}, {216, 288}, {288, 360}, {360, 72}, {72, 144}};
@@ -330,6 +341,22 @@ void DisplayHandler::drawRgbScreenSelect() {
                 LedSelectRings[currentRgbSelect][2] + 3,
                 LedSelectRings[currentRgbSelect][2], 0, 360, TFT_DARKGREY,
                 TFT_DARKGREY, true);
+  }
+}
+
+void DisplayHandler::drawRgbAcceptPrompt() {
+  if (rgbAcceptSelect != CurrentRgbAcceptSelect) {
+    CurrentRgbAcceptSelect = rgbAcceptSelect;
+
+    if (CurrentRgbAcceptSelect == 0) { // accept
+      tft.fillRoundRect(20, 105, 200, 30, 5, TFT_BLACK);
+      tft.fillRoundRect(22, 107, 94, 26, 3, TFT_GREEN);
+      tft.drawString("Accept", 31, 110, 4);
+    } else {
+      tft.fillRoundRect(20, 105, 200, 30, 5, TFT_BLACK);
+      tft.fillRoundRect(124, 107, 94, 26, 3, TFT_RED);
+      tft.drawString("Discard", 125, 110, 4);
+    }
   }
 }
 

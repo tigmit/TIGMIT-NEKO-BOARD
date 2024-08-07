@@ -47,6 +47,10 @@ private:
                                            &printConfigInEEPROM,
                                            "show hex values stored in EEPROM"));
 
+    console.registerCommand(
+        ConsoleCommand("writeConfigToEEPROM", &writeConfigToEEPROM,
+                       "store current RGB config to EEPROM"));
+
     /***************************************************************************/
   }
 
@@ -109,6 +113,12 @@ private:
 
   static int printConfigInEEPROM(int argc, char **argv) {
     rgbHandler.getCurrentConfig().printConfigBytesInEEPROM();
+    // Return EXIT_SUCCESS if everything worked as intended.
+    return EXIT_SUCCESS;
+  }
+
+  static int writeConfigToEEPROM(int argc, char **argv) {
+    rgbHandler.getCurrentConfig().storeConfigToEEPROM();
     // Return EXIT_SUCCESS if everything worked as intended.
     return EXIT_SUCCESS;
   }

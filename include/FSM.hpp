@@ -190,7 +190,6 @@ private:
 
   void startUpRun() {
     pDsp_->printPNG(startscreen, sizeof(startscreen), 0, 0);
-    pRgbHandler_->setBrightnes(15); // full brightness = 0xFF
     pRgbHandler_->startupSequence();
 
     // set next state
@@ -390,14 +389,28 @@ private:
   void acceptSettingsEnter() {
 #ifdef FSM_PRINTS_ENABLED
     Serial.println("State Transition -> State : acceptSettings");
-    Serial.println("save new config to EEPROM");
-    pRgbHandler_->getCurrentConfig().storeConfigToEEPROM();
 #endif
+    pDsp_->resetRgbAcceptSelect();
     // nothing else to do here yet in the furture. write config to flash
   }
 
   void acceptSettingsRun() {
-    setMainState(mainMenu);
-    setRgbState(rgbSelectScreen);
+    pEncHandler_->UpdateRgbAcceptSelect(pDsp_->getRgbAcceptSelect());
+    pDsp_->drawRgbAcceptPrompt();
+    if (pEncHandler_->EncButtonPressed()) {
+      if (pDsp_->getRgbAcceptSelect() == 0) {
+        // accepted
+        pRgbHandler_->getCurrentConfig().storeConfigToEEPROM();
+        setMainState(mainMenu);
+        setRgbState(rgbSelectScreen);
+      } else {
+#ifdef FSM_PRINTS_ENABLED
+        Serial.println("  Discard. On reset the old config will be loaded");
+#endif
+        // discard config
+        setMainState(mainMenu);
+        setRgbState(rgbSelectScreen);
+      }
+    }
   }
 };

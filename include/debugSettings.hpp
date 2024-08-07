@@ -21,5 +21,6 @@
 #define NEKO_SHELL
 #define FSM_PRINTS_ENABLED
 #define DISABLE_BLE_OUTPUT
+#define EEPROM_LOG
 #define DEBUG_LVL_1
 #endif

@@ -82,7 +82,7 @@ public:
   }
 
   bool updateRgbBrightnessSelect(uint8_t &brightness,
-                                 uint8_t maxBrightness = 0xFF) {
+                                 uint8_t maxBrightness = 0x1E) {
     // checking encoder val state
     encoderPosition = encoder.getCount() / 2;
     if (encoderPosition == 0) {
@@ -94,12 +94,28 @@ public:
       return true;
 
     } else if (encoderPosition < 0) {
-      brightness -= brightnessIncrement;
-      brightness = (brightness <= 0) ? 0 : brightness;
+      int buff = brightness;
+      buff -= brightnessIncrement;
+      brightness = (buff <= 0) ? 0 : buff;
       encoder.clearCount();
       return true;
     }
     return false;
+  }
+
+  void UpdateRgbAcceptSelect(int &modeSet) {
+
+    // checking encoder val state
+    encoderPosition = encoder.getCount() / 2;
+    if (encoderPosition == 0) {
+      // do nothing
+    } else if (encoderPosition > 0) {
+      modeSet = 1;
+      encoder.clearCount();
+    } else if (encoderPosition < 0) {
+      modeSet = 0;
+      encoder.clearCount();
+    }
   }
 
   bool EncButtonPressed() {
