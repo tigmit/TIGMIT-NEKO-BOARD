@@ -14,7 +14,7 @@
 
 #include <BleKeyboard.h>
 
-BleKeyboard kbd{"tigmit_Board", "tigmit", 100};
+BleKeyboard kbd{"NEKO_BOARD", "tigmit", 100};
 class KeyboardHandler {
 public:
   KeyboardHandler(ShiftRegisterHandler *srh) : pSrHandler_(srh){};

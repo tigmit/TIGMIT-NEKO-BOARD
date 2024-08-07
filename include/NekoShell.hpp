@@ -51,6 +51,10 @@ private:
         ConsoleCommand("writeConfigToEEPROM", &writeConfigToEEPROM,
                        "store current RGB config to EEPROM"));
 
+    console.registerCommand(
+        ConsoleCommand("setIndividualRGB", &setIndividualRGB,
+                       "push a single LED provided with values for ROW, COLL"));
+
     /***************************************************************************/
   }
 
@@ -100,6 +104,24 @@ private:
     rgbHandler.pushCurrentRGBValues();
     printf("success. R: %d | G: %d | B: %d\n", rgbHandler.getRval(),
            rgbHandler.getGval(), rgbHandler.getBval());
+    return EXIT_SUCCESS;
+  }
+
+  static int setIndividualRGB(int argc, char **argv) {
+    // Ensure that we have an argument to parse
+    if (argc != 3) {
+      printf("please provide values for |0 <= Row <= 5| 0 <= Coll <= 14\n");
+      // Return EXIT_FAILURE if something did not work.
+      return EXIT_FAILURE;
+    }
+    // Take the first argument...
+    uint8_t argRow = chartoint(argv[1]);
+    uint8_t argColl = chartoint(argv[2]);
+    printf("show RGB at ROW : %d | COLL : %d\n", argRow, argColl);
+
+    rgbHandler.pushSingleRGB(argRow, argColl);
+
+    // Return EXIT_SUCCESS if everything worked as intended.
     return EXIT_SUCCESS;
   }
 
