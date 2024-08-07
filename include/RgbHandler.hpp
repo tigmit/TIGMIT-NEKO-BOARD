@@ -6,8 +6,7 @@
  */
 
 #pragma once
-
-#include "EncoderHandler.hpp"
+#include "layout.hpp"
 
 #include <EEPROM.h>
 #include <FastLED.h>
@@ -179,8 +178,6 @@ public:
     }
   }
 
-  bool rgbIsOn() const { return currentConfig.rgbConfig_.rgbOn; }
-
   void turnRgbOff() {
     setConstColor(CRGB::Black);
     currentConfig.rgbConfig_.rgbOn = false;
@@ -204,12 +201,25 @@ public:
     currentConfig.rgbConfig_.rgbOn = true;
   }
 
+  void pushSingleRGB(int8_t row, int8_t coll, CRGB color = CRGB::Black) {
+    if (color != CRGB::Black) {
+      leds[rgbLayout[row][coll]] = currentConfig.rgbConfig_.currentRGBValue;
+    } else {
+      leds[rgbLayout[row][coll]] = color;
+    }
+    FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
+    FastLED.show();
+  }
+
+  bool rgbIsOn() const { return currentConfig.rgbConfig_.rgbOn; }
+
   uint8_t &getRval() { return currentConfig.rgbConfig_.rVal; }
   uint8_t &getGval() { return currentConfig.rgbConfig_.gVal; }
   uint8_t &getBval() { return currentConfig.rgbConfig_.bVal; }
   uint8_t &getCurrentBrightness() {
     return currentConfig.rgbConfig_.currentBrightness;
   }
+
   uint8_t getMaxRgbBrightness() const { return maxRgbBrightness; }
   Config &getCurrentConfig() { return currentConfig; }
 
