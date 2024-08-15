@@ -6,6 +6,7 @@ enum MainStates {
   mainMenu = 0,
   bongoCat = 2,
   rgbMenu = 3,
+  idle = 4,
   mainUndef = 255
 };
 enum RgbMenuStates {

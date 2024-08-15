@@ -138,6 +138,17 @@ public:
     return false;
   }
 
+  void updateVolume() {
+    int8_t VolPosition = encoder.getCount() / 2;
+    if (VolPosition > 0) {
+      kbd.write(KEY_MEDIA_VOLUME_UP);
+      encoder.clearCount();
+    } else if (VolPosition < 0) {
+      kbd.write(KEY_MEDIA_VOLUME_DOWN);
+      encoder.clearCount();
+    }
+  }
+
 private:
   ESP32Encoder encoder;
 

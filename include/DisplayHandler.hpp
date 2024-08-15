@@ -124,6 +124,16 @@ public:
     rgbSelect = 0;
   }
 
+  void resetIdleScreenFlags() {
+    idleWallpaperOn = false;
+    capsLockON = false;
+    capsLockOFF = false;
+    BLEwaitOn = false;
+    BLEconnOn = false;
+    battIconOn = false;
+    chargeFlashOn = false;
+  }
+
   void resetDspdrawflags() {
     capsLockON = false;
     capsLockOFF = false;
@@ -161,6 +171,14 @@ public:
     }
   }
 
+  void drawIdleScreenWallpaper() {
+    if (!idleWallpaperOn) {
+      // print wallpaper
+      printPNG(idleWallpaper, sizeof(idleWallpaper), 0, 0);
+      idleWallpaperOn = true;
+    }
+  }
+
   void drawRgbScreenWallpaper() {
     if (!rgbScreenWallpaperOn) {
       printPNG(LEDSettingsScreen, sizeof(LEDSettingsScreen), 0, 0);
@@ -187,6 +205,7 @@ private:
 
   bool mainWallpaperOn = false;
   bool rgbScreenWallpaperOn = false;
+  bool idleWallpaperOn = false;
 
   u_int32_t handsOfftrigger = 700000;
   u_int32_t handsOffCount = handsOfftrigger;
