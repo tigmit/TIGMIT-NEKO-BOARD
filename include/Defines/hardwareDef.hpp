@@ -23,7 +23,7 @@ static constexpr int row3{33};
 static constexpr int row4{25};
 static constexpr int row5{26};
 
-// volume Slider
+// Analog Slider
 static constexpr int SliderReadPin{12};
 
 // battery is charging indicator
