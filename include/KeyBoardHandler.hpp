@@ -34,10 +34,6 @@ public:
     }
     pSrHandler_->init();
 
-    // setup Volume read pin:
-    pinMode(SliderReadPin, INPUT);
-    currentVolume_ = analogRead(SliderReadPin);
-
     // setup BLE connection indicator LED
     pinMode(LED_BUILTIN, OUTPUT);
     digitalWrite(LED_BUILTIN, LOW);
@@ -124,10 +120,6 @@ private:
 
   // NOTE: once i introduce Layers this is used to toggle these layers
   int layerIdx = 0;
-
-  int currentVolume_ = 0;
-  int readVolume = 0;
-  int sliderbounds = 10;
 
   // dependecies
   ShiftRegisterHandler *pSrHandler_;

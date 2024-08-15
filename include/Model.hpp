@@ -12,10 +12,12 @@
 #include "KeyBoardHandler.hpp"
 #include "RgbHandler.hpp"
 #include "ShiftRegisterHandler.hpp"
+#include "SliderHandler.hpp"
 
 ShiftRegisterHandler srHandler;
 KeyboardHandler kbdHandler(&srHandler);
 BatteryHandler batHandler;
 EncoderHandler encHandler;
 RgbHandler rgbHandler;
+SliderHandler sliderHandler;
 DisplayHandler dspHandler(&batHandler, &kbdHandler);

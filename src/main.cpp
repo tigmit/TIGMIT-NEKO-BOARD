@@ -32,6 +32,8 @@ void setup() {
   dspHandler.init();
   // ----------init keyboard matrix
   kbdHandler.init();
+  // ----------init slider Handler
+  sliderHandler.init();
   // ----------init battery handler
   batHandler.init();
   // ----------init RGB handler
