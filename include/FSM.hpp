@@ -38,6 +38,9 @@ public:
     case startUp:
       startUpEnter();
       break;
+    case idle:
+      idleEnter();
+      break;
     case mainMenu:
       mainMenuEnter();
       break;
@@ -49,7 +52,7 @@ public:
 
     // default fallback state
     default:
-      mainMenuEnter();
+      idleEnter();
       break;
     }
 
@@ -58,6 +61,9 @@ public:
       switch (currentMainState) {
       case startUp:
         startUpRun();
+        break;
+      case idle:
+        idleRun();
         break;
       case mainMenu:
         mainMenuRun();
@@ -71,7 +77,7 @@ public:
 
       // default fallback state
       default:
-        mainMenuRun();
+        idleRun();
         break;
       }
     }
@@ -193,7 +199,34 @@ private:
     pRgbHandler_->startupSequence();
 
     // set next state
-    setMainState(mainMenu);
+    setMainState(idle);
+  }
+
+  /**
+   * idle / default idle state
+   */
+  void idleEnter() {
+#ifdef FSM_PRINTS_ENABLED
+    Serial.println("State Transition -> State : Idle");
+#endif
+    pDsp_->resetIdleScreenFlags();
+  }
+
+  void idleRun() {
+    pDsp_->drawIdleScreenWallpaper();
+
+    pBatHandler_->updateBateryHandler();
+    pDsp_->updateChargeIcon(90, 6);
+
+    pDsp_->updateBLEIcon(10, 64, kbd.isConnected());
+    pDsp_->updateCapslockIcon(170, 64, pKbdHandler_->getCapslockStatus());
+
+    pEncHandler_->updateVolume();
+
+    if (pEncHandler_->EncButtonPressed()) {
+      // set next state
+      setMainState(mainMenu);
+    }
   }
 
   /**
@@ -243,7 +276,7 @@ private:
   void BongoCatStateRun() {
     pDsp_->bongoMode();
     if (pEncHandler_->EncButtonPressed()) {
-      setMainState(mainMenu);
+      setMainState(idle);
     }
   }
 
@@ -401,15 +434,15 @@ private:
       if (pDsp_->getRgbAcceptSelect() == 0) {
         // accepted
         pRgbHandler_->getCurrentConfig().storeConfigToEEPROM();
-        setMainState(mainMenu);
         setRgbState(rgbSelectScreen);
+        setMainState(idle);
       } else {
 #ifdef FSM_PRINTS_ENABLED
         Serial.println("  Discard. On reset the old config will be loaded");
 #endif
         // discard config
-        setMainState(mainMenu);
         setRgbState(rgbSelectScreen);
+        setMainState(idle);
       }
     }
   }

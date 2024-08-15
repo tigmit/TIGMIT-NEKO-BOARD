@@ -3,6 +3,7 @@
 
 // include all the immages in here
 
+#include "idleWallpaper.hpp"
 #include "immages/LedSettingsScreen.hpp"
 #include "immages/Wallpaper.hpp"
 #include "immages/bongoHandsOff.hpp"
