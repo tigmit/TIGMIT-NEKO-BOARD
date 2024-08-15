@@ -24,8 +24,7 @@ static constexpr int row4{25};
 static constexpr int row5{26};
 
 // volume Slider
-static constexpr int SliderReadPin{
-    12}; // TODO: gotta set this accoarding to schematics
+static constexpr int SliderReadPin{12};
 
 // battery is charging indicator
 static constexpr int BatterySense{14};

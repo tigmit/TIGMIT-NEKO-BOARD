@@ -16,7 +16,6 @@
 
 #pragma once
 #include "BatteryHandler.hpp"
-#include "Defines/displayDef.hpp"
 #include "EncoderHandler.hpp"
 #include "KeyBoardHandler.hpp"
 #include "RgbHandler.hpp"

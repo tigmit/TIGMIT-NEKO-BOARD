@@ -159,11 +159,6 @@ public:
     FastLED.show();
   }
 
-  void brightnessSlider() { // legacy but might wanna recycle for rgb settings
-    FastLED.setBrightness(analogRead(SliderReadPin) * (255.0 / 4095.0));
-    FastLED.show();
-  }
-
   void startupSequence() {
     FastLED.setBrightness(currentConfig.rgbConfig_.currentBrightness);
     for (int i = 0; i < NUM_LEDS; i++) {
