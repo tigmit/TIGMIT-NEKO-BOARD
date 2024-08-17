@@ -1,3 +1,9 @@
+/**
+ * FsmStates.hpp
+ * brief   : this file contains all State defines
+ * created : 27.07.2024
+ * creator : @tigmit Licence : opensource
+ */
 #pragma once
 #include <Arduino.h>
 

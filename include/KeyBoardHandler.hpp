@@ -1,5 +1,5 @@
 /**
- * ../lib/KeyBoardHandler.hpp
+ * KeyBoardHandler.hpp
  * brief   : this class handles all the tasks of the keymatrix such as scanning
  *           inputs and initializing the array
  * created : 25.05.2024

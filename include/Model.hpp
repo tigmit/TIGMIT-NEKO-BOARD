@@ -1,7 +1,7 @@
 /**
- * main.cpp
- * brief   : main compilation unit containing loop and setup
- * created : 25.05.2024
+ * Model.hpp
+ * brief   : make shift model to share all handlers across the project
+ * created : 25.07.2024
  * creator : @tigmit Licence : opensource
  */
 #pragma once
