@@ -5,10 +5,6 @@
 	"build": {
 		"dockerfile": "Dockerfile"
 	},
-	// USB - Passthrough to hardware
-	"mounts": [
-		"type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
-	],
 	// set up VS-code stuff
 	"customizations": {
 		// Configure properties specific to VS Code.

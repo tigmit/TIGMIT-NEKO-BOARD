@@ -10,7 +10,11 @@ RUN apt-get install -y git
 RUN apt-get install -y gitg
 
 RUN apt-get install -y clang-format 
-RUN apt-get install -y pio
+
+RUN apt-get install -y curl
+RUN mkdir /etc/udev
+RUN mkdir /etc/udev/rules.d
+RUN curl -fsSL https://raw.githubusercontent.com/platformio/platformio-core/develop/platformio/assets/system/99-platformio-udev.rules | sudo tee /etc/udev/rules.d/99-platformio-udev.rules
 #RUN apt-get install git
 # [Optional] Uncomment this section to install additional vcpkg ports.
 # RUN su vscode -c "${VCPKG_ROOT}/vcpkg install <your-port-name-here>"
