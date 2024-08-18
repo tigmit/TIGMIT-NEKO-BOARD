@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  tigmitnekoboard:
+    image: tigmitnekoboard
+    build:
+      context: .
+      dockerfile: ./Dockerfile

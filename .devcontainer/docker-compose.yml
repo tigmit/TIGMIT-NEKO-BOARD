@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  tigmitnekoboard:
+    image: tigmitnekoboard
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+
+    serial_container:
+      container_name: beagle_serial_test
+      build: .
+      privileged: true
+      devices:
+        - "/dev/i2c-1:/dev/i2c-1"
+        - "/dev/mem:/dev/mem"
+        - "/dev/ttyACM0:/dev/ttyACM0"
+        - "/dev/ttyS0:/dev/ttyS0"
+      cap_add:
+        - SYS_RAWIO
+      ports:
+        - "9001:5000"
