@@ -5,11 +5,6 @@
  */
 #pragma once
 
-#include "Defines/hardwareDef.hpp"
-#include "FsmStates.hpp"
-#include "KeyBoardHandler.hpp"
-#include "debugSettings.hpp"
-
 #include <Arduino.h>
 #include <ESP32Encoder.h> // https://github.com/madhephaestus/ESP32Encoder.git
 #include <math.h>
@@ -24,7 +19,7 @@ public:
     pinMode(encBTN, INPUT);
   }
 
-  void UpdateMainStateSelect(int &modeSet) {
+  void UpdateMainStateSelect(int &modeSet, u_int8_t numStates) {
 
     // checking encoder val state
     encoderPosition = encoder.getCount() / 2;
@@ -32,17 +27,16 @@ public:
       // do nothing
     } else if (encoderPosition > 0) {
       modeSet++;
-      modeSet %= numMainStates;
+      modeSet %= numStates;
       encoder.clearCount();
 
     } else if (encoderPosition < 0) {
-      modeSet--;
-      modeSet = (modeSet < 0) ? numMainStates - 1 : modeSet % numMainStates;
+      modeSet = (modeSet == 0) ? numStates - 1 : modeSet - 1;
       encoder.clearCount();
     }
   }
 
-  void UpdateRgbStateSelect(int &modeSet) {
+  void UpdateRgbStateSelect(int &modeSet, u_int8_t numStates) {
 
     // checking encoder val state
     encoderPosition = encoder.getCount() / 2;
@@ -50,12 +44,11 @@ public:
       // do nothing
     } else if (encoderPosition > 0) {
       modeSet++;
-      modeSet %= numRgbStates;
+      modeSet %= numStates;
       encoder.clearCount();
 
     } else if (encoderPosition < 0) {
-      modeSet--;
-      modeSet = (modeSet < 0) ? numRgbStates - 1 : modeSet % numRgbStates;
+      modeSet = (modeSet == 0) ? numStates - 1 : modeSet - 1;
       encoder.clearCount();
     }
   }

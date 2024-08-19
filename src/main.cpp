@@ -19,7 +19,7 @@ TaskHandle_t Loop1;       // loop running on core 1 (default core)
 void Loop0_(void *param); // forward declaration Loop0
 void Loop1_(void *param); // forward declaration Loop1
 
-FSM fsm(&batHandler, &kbdHandler, &rgbHandler, &encHandler, &dspHandler);
+FSM fsm; // start with default state -> pStartUp
 
 #ifdef NEKO_SHELL
 NekoShell nekoShell;
@@ -56,7 +56,7 @@ void Loop0_(void *param) {
 
   //__________________RUN Loop0
   while (true) {
-    fsm.mainFSM(); // calling statemachine
+    fsm.update(); // running statemachine
   }
 }
 
