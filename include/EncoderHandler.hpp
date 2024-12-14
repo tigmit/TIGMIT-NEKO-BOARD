@@ -1,5 +1,5 @@
 /**
- * ../lib/EncoderHandler.hpp
+ * EncoderHandler.hpp
  * brief   : this class handles all the tasks required to read the rotary
  * encoder created : 25.05.2024 creator : @tigmit Licence : opensource
  */

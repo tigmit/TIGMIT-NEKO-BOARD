@@ -1,5 +1,5 @@
 /**
- * ../lib/layout.hpp
+ * layout.hpp
  * brief   : defining the layout for the keymatrix
  * created : 25.05.2024
  * creator : @tigmit

@@ -1,3 +1,11 @@
+/**
+ * NekoShell.hpp
+ * brief   : Neko Shell used for live shell commands
+ *           for debugging purposes only. dont compile it into the release
+ * created : 27.07.2024
+ * creator : @tigmit Licence : opensource
+ */
+
 #pragma once
 
 #include "Defines/hardwareDef.hpp"

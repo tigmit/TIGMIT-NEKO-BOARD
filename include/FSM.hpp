@@ -1,5 +1,5 @@
 /**
- * ../lib/FSM.hpp
+ * FSM.hpp
  * brief   : this is the statemachine that powers all the display states
  * created : 27.07.2024
  * creator : @tigmit Licence : opensource
